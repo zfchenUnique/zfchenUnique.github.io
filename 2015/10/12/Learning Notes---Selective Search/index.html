@@ -1,0 +1,748 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Learning Notes,selective search," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Selective Search is used to find possible location bounding boxes for object detection. It combines the strength of exhaustive search and segmentation, and use different strategies based on low level">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learning Notes---Selective Search">
+<meta property="og:url" content="http://yoursite.com/2015/10/12/Learning Notes---Selective Search/index.html">
+<meta property="og:site_name" content="fly's notes">
+<meta property="og:description" content="Selective Search is used to find possible location bounding boxes for object detection. It combines the strength of exhaustive search and segmentation, and use different strategies based on low level">
+<meta property="og:image" content="https://farm6.staticflickr.com/5717/22125572382_02951c348c_c.jpg">
+<meta property="og:updated_time" content="2016-04-05T11:17:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Learning Notes---Selective Search">
+<meta name="twitter:description" content="Selective Search is used to find possible location bounding boxes for object detection. It combines the strength of exhaustive search and segmentation, and use different strategies based on low level">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/10/12/Learning Notes---Selective Search/"/>
+
+
+  <title> Learning Notes---Selective Search | fly's notes </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fly's notes</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Don't wait for things to happen, plan what you want to happen</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            Schedule
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Learning Notes---Selective Search
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-12T22:07:16+08:00" content="2015-10-12">
+              2015-10-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/object-recognition/" itemprop="url" rel="index">
+                    <span itemprop="name">object recognition</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/10/12/Learning Notes---Selective Search/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/12/Learning Notes---Selective Search/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Selective Search is used to find possible location bounding boxes for object detection.</strong> It combines the strength of exhaustive search and segmentation, and use different strategies based on low level features to sample the origin bounding boxes. Compared with other methods, it produce less bounding boxes and improve the accuracy.<br><a id="more"></a> </p>
+<p><strong>Since the results are relatively good, and are class-independent, recent papers focusing on object localization and segmentation with CNN use it to preprocess images.</strong></p>
+<p>Source: <a href="http://disi.unitn.it/~uijlings/MyHomepage/index.php#page=projects1" target="_blank" rel="external">Selective Search for Object Recognition</a></p>
+<h3 id="Generate_origin_regions:_Selective_Search_by_Hierarchical_Grouping">Generate origin regions: Selective Search by Hierarchical Grouping</h3><p>  Use method in <em><a href="http://www.cs.cornell.edu/~dph/papers/seg-ijcv.pdf" target="_blank" rel="external">Efficient Graph-Based Image Segmentation</a></em> to get initial regions, then merge similar regions, and do it iteratively to obtain candidate regions in different scales until the whole image becomes a single region.</p>
+<p><a data-flickr-embed="true" href="https://www.flickr.com/photos/136226371@N06/22125572382/in/datetaken/" title="Term-Selective Search 1" target="_blank" rel="external"><img src="https://farm6.staticflickr.com/5717/22125572382_02951c348c_c.jpg" width="800" height="341" alt="Term-Selective Search 1"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script></p>
+<h3 id="Different_strategies_to_mearsure_similarity">Different strategies to mearsure similarity</h3><ol>
+<li><p>Color similarity</p>
+<p> For each region, generate one-dimensional color histograms for each colour channel using 25 bins. And the histograms is normalized by L1 norm. Similarity is measured using the histogram intersection.</p>
+<p> <strong>In order to take all invariants into consideration, use 8 different color spaces.</strong></p>
+</li>
+<li><p>Texture similarity</p>
+<p> Use fast <em>SIFT-like</em>(not SIFT) to represent it. Specificly, take Gaussian derivatives in eight orientations using σ = 1 for each colour channel, and extract a histogram using a bin size of 10 for each channel and each direction. Similarity is alse measured by the histogram intersection.</p>
+</li>
+<li><p>Size similarity</p>
+<p> To prevent small regions being eaten by large regions, it encourages small regions to merge first. Similarity is measured by:</p>
+ 
+	$${S_{size}}({r_i},{r_j}) = 1 - {{size({r_i}) + size({r_j})} \over {size(im)}}$$
+	
+</li>
+<li><p>Distance similarity</p>
+<p>   This shows how how well region ri and rj fit into each other. Each bounding region is surrounded by a tight bounding box, and the similarity is measured by the area not covered by the regions in the bounding boxes.</p>
+</li>
+<li><p>Complementary Starting Regions</p>
+<p> Different starting region is generated by different color space and the threshold. Each has different invariance properties. Use different combination of it to improve the results.<br>To be specific, use differcent color space indvidualy, and simply take all the bounding boxes.</p>
+</li>
+</ol>
+<h3 id="Combining_Locations">Combining Locations</h3><p>  Order the combined object hypotheses set based on the order in which the hypotheses were generated in each individual grouping strategy. That means order the hypotheses set according to the scale. To prevent too heavy emphasis large regions, multiply the large region positioin values with a random number in range [0,1].</p>
+<h3 id="Experimental_results">Experimental results</h3><p>  Selective search is highly effective for generating object locations in terms of regions. But there is a trade-off between quality and quantity of object hypothesis and the object recognition accuracy. The article indicates that at a reasonable 10,000 locations, their object hypothesis set is close to optimal for the Bag-of-Words recognition system. Maybe it can be a refrence when applying it to CNN.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Learning-Notes/" rel="tag">#Learning Notes</a>
+          
+            <a href="/tags/selective-search/" rel="tag">#selective search</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/11/Test Blog/" rel="next" title="Test Blog">
+                <i class="fa fa-chevron-left"></i> Test Blog
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/04/cudnn install/" rel="prev" title="cudnn_install">
+                cudnn_install <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/10/12/Learning Notes---Selective Search/"
+           data-title="Learning Notes---Selective Search" data-url="http://yoursite.com/2015/10/12/Learning Notes---Selective Search/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpeg"
+               alt="Chaofeng" />
+          <p class="site-author-name" itemprop="name">Chaofeng</p>
+          <p class="site-description motion-element" itemprop="description">Try everything</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/fly-cfchen" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/fly-cfchen" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://youngyf.github.io" title="Yangfang" target="_blank">Yangfang</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        <div>
+        <br/>
+        <br/>
+        <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?u=8L5p&d=Azk-cTsOCSFs6pzc1TvKODdeyMHop1f_VUNY-ksx8Tc"></script>
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate_origin_regions:_Selective_Search_by_Hierarchical_Grouping"><span class="nav-number">1.</span> <span class="nav-text">Generate origin regions: Selective Search by Hierarchical Grouping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Different_strategies_to_mearsure_similarity"><span class="nav-number">2.</span> <span class="nav-text">Different strategies to mearsure similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Combining_Locations"><span class="nav-number">3.</span> <span class="nav-text">Combining Locations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experimental_results"><span class="nav-number">4.</span> <span class="nav-text">Experimental results</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chaofeng</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"fly-notes"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
