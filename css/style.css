@@ -1,0 +1,88 @@
+body {   
+     margin:         auto;
+     background-color: #eee;
+     font-size:      13pt;
+	padding-left:   5pt;	
+}
+
+h1   {  
+     font-size:      24pt; 
+     font-style:     normal;
+     margin-top:     15px;
+}
+
+h2   {  
+     font-size:      18pt; 
+     font-style:     normal;
+}
+
+a    {   
+     color:          RoyalBlue;  
+     text-decoration:none;       
+}
+
+.main-container { 
+     max-width: 1000px;
+     margin: 0 auto;     
+     background: white;
+     box-shadow: 0 0 5px rgba(107, 110, 112, 0.4); 
+}
+
+.content-container {
+     box-sizing: border-box;
+     max-width: 900px;
+     width: 100%;
+     margin: 0 auto;
+     padding: 10px;
+     overflow: hidden;
+}
+
+.photo {
+    width: 200px;
+    float: left;
+    margin-right: 40px;
+    margin-top: 40px;
+}
+
+.linkimg {
+     width:27px;
+     height:27px;
+}
+
+/*  Paper styles
+--------------------------------------*/
+.paper {
+    border-bottom: solid 1px #EEE;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+.pimg {
+    float: left;
+    width: 80px;
+    margin-right: 10px;
+}
+
+.ptitle {
+    padding: 1px;
+    margin: 1px;
+    font-weight: bold;
+}
+
+.pauthors {
+    padding: 1px;
+    margin: 1px;
+    font-style: italic;
+}
+
+.pvenue {
+    display: inline-block;
+    color: #500;
+    margin: 1px;
+    margin-right: 20px;
+}
+
+.plinks {
+    display: inline-block;
+}
+
