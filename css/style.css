@@ -2,7 +2,7 @@ body {
      margin:         auto;
      background-color: #eee;
      font-size:      13pt;
-	padding-left:   5pt;
+	   padding-left:   5pt;
 }
 
 h1   {
@@ -56,18 +56,23 @@ img {
     /* align-items: stretch | flex-start | flex-end | center | baseline; */
 }
 
-.photo {
+/*  Profile styles
+--------------------------------------*/
+
+#profile {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+#profile img{
     width: 200px;
-    float: left;
-    margin-right: 40px;
-    margin-top: 40px;
+    max-height: 300px;
+    margin: 8 20 20 20;
+    object-fit: contain;
 }
 
-.linkimg {
-     width:27px;
-     height:27px;
-}
-
+/*  Education and Experience styles
+--------------------------------------*/
 .imginfo {
    max-width: 36%;
    max-height: 160px;
@@ -83,10 +88,11 @@ img {
 }
 
 .imginfo p {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 /*  Paper styles
+    FontAwesome reference: http://astronautweb.co/snippet/font-awesome/
 --------------------------------------*/
 #paper {
     border-bottom: solid 1px #EEE;
@@ -120,9 +126,6 @@ img {
     margin: 1px;
     margin-right: 10px;
 }
-
-/* font reference: http://astronautweb.co/snippet/font-awesome/
-*/
 
 #paper .pdflink::before{
   font-family: FontAwesome;
