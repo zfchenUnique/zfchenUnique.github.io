@@ -1,3 +1,7 @@
 theme: jekyll-theme-slate
 title: Welcome to zfchen's homepage.
 description: First try for my github page.
+title: 黄琦雲的博客 # 网站的标题
+description: > # 网站的描述，可能会出现在搜索引擎展示结果中
+url: "https://zfchen.github.io" # 网站地址
+github_repo: JeffCHEN2017/zfchen.github.io
