@@ -1,0 +1,47 @@
+@article{chen2020cvpr,
+  title={Cops-Ref: A new Dataset and Task on Compositional Referring Expression Comprehension},
+  author={Chen, Zhenfang and Wang, Peng and Ma, Lin and Wong, Kwan-Yee K and Wu, Qi},
+  journal={arXiv preprint arXiv:2001.09308},
+  year={2020}
+}
+
+@article{chen2020look,
+  title={Look Closer to Ground Better: Weakly-Supervised Temporal Grounding of Sentence in Video},
+  author={Chen, Zhenfang and Ma, Lin and Luo, Wenhan and Tang, Peng and Wong, Kwan-Yee K},
+  journal={arXiv preprint arXiv:2001.09308},
+  year={2020}
+}
+
+@inproceedings{chen19acl,
+    author = "Chen, Z. and Ma, L. and Luo, W. and Wong, K.-Y.~K.",
+    title = "Weakly-Supervised Spatio-Temporally Grounding Natural Sentence in Video",
+    booktitle = "Proc. 57th Annual Meeting of the Association for Computational Linguistics",
+    volume = "",
+    pages = "",
+    address = "Florence, Italy",
+    month = "July",
+    year = "2019"
+}
+
+@inproceedings{chen19acmmm,
+    author = "Chen, Z. and Kuang, Z. and Zhang, W. and Wong, K.-Y.~K.",
+    title = "Learning Local Similarity with Spatial Relations for Object Retrieval",
+    booktitle = "Proc. 27th ACM International Conference on Multimedia",
+    volume = "",
+    pages = "",
+    address = "Nice, France",
+    month = "October",
+    year = "2019"
+}
+
+@inproceedings{chen17mmtw,
+    author = "Chen, Z and Kuang, Z. and Wong, K.-Y.~K. and Zhang, W.",
+    title = "Aggregated Deep Feature from Activation Clusters for Particular Object Retrieval ",
+    booktitle = "Proc. 25th ACM International Conference on Multimedia (MM) Thematic Workshops ",
+    volume = "",
+    pages = "44--51",
+    address = "California, USA",
+    month = "October",
+    year = "2017"
+}
+
