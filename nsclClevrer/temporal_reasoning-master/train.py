@@ -18,13 +18,10 @@ from torch.utils.data import Dataset, DataLoader
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 from models import PropagationNetwork
-from data_tube import PhysicsCLEVRDataset, collate_fn
+from data import PhysicsCLEVRDataset, collate_fn
 
 from utils import count_parameters, Tee
 import pdb
-from utils_tube import set_debugger
-
-set_debugger()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pn', type=int, default=1)
@@ -45,7 +42,7 @@ parser.add_argument('--train_valid_ratio', type=float, default=0.90909)
 parser.add_argument('--outf', default='files')
 parser.add_argument('--dataf', default='data')
 parser.add_argument('--num_workers', type=int, default=4)
-parser.add_argument('--log_per_iter', type=int, default=500)
+parser.add_argument('--log_per_iter', type=int, default=5000)
 parser.add_argument('--ckp_per_iter', type=int, default=50000)
 parser.add_argument('--eval', type=int, default=0)
 parser.add_argument('--edge_superv', type=int, default=1, help='whether to include edge supervision')
@@ -74,18 +71,12 @@ parser.add_argument('--resume_iter', type=int, default=0)
 parser.add_argument('--attr_dim', type=int, default=5)
 
 # object state:
-# [dx, dy, dw, dh, r, g, b]
-parser.add_argument('--state_dim', type=int, default=7)
+# [mask, dx, dy, r, g, b]
+parser.add_argument('--state_dim', type=int, default=6)
 
 # relation:
-# [collision, dx, dy, dw, dh]
-parser.add_argument('--relation_dim', type=int, default=5)
-
-# tube new  info
-parser.add_argument('--tube_dir', default='')
-parser.add_argument('--prp_dir', default='')
-parser.add_argument('--ann_dir', default='')
-parser.add_argument('--tube_mode', type=int, default=0)
+# [collision, dx, dy]
+parser.add_argument('--relation_dim', type=int, default=3)
 
 args = parser.parse_args()
 
@@ -95,7 +86,7 @@ cv2.setNumThreads(0)
 if args.env == 'CLEVR':
     #args.n_rollout = 11000
     args.time_step = 128
-    args.n_rollout = 10000
+    args.n_rollout = 200
     args.train_valid_ratio = 0.9
 else:
     raise AssertionError("Unsupported env")
@@ -169,8 +160,8 @@ for epoch in range(st_epoch, args.n_epoch):
         losses_image = 0.
         losses_collision = 0.
         for i, data in enumerate(dataloaders[phase]):
+            pdb.set_trace()
             attr, x, rel, label_obj, label_rel = data
-            #pdb.set_trace()
 
             node_r_idx, node_s_idx, Ra = rel[3], rel[4], rel[5]
             Rr_idx, Rs_idx, value = rel[0], rel[1], rel[2]
@@ -193,8 +184,10 @@ for epoch in range(st_epoch, args.n_epoch):
                 pred_obj, pred_rel = model(
                     attr, x, Rr, Rs, Ra, node_r_idx, node_s_idx, args.pstep)
 
-            position = pred_obj[:, :4]
-            image = pred_obj[:, 4:]
+            mask = pred_obj[:, 0]
+            position = pred_obj[:, 1:3]
+            image = pred_obj[:, 3:]
+            collision = pred_rel
 
             '''
             print('mask\n', mask)
@@ -203,13 +196,21 @@ for epoch in range(st_epoch, args.n_epoch):
             print('img\n', image[0])
             '''
 
-            loss_position = criterionMSE(position, label_obj[:, :4])
-            loss_image = criterionMSE(image, label_obj[:, 4:])
-            loss = loss_position * args.lam_position
+            loss_mask = criterionMSE(mask, label_obj[:, 0])
+            loss_position = criterionMSE(position, label_obj[:, 1:3])
+            loss_image = criterionMSE(image, label_obj[:, 3:])
+            loss_collision = criterionMSE(collision, label_rel)
+            loss = loss_mask * args.lam_mask
+            loss += loss_position * args.lam_position
             loss += loss_image * args.lam_image
 
+            if args.edge_superv:
+                loss += loss_collision * args.lam_collision
+
+            losses_mask += np.sqrt(loss_mask.item())
             losses_position += np.sqrt(loss_position.item())
             losses_image += np.sqrt(loss_image.item())
+            losses_collision += np.sqrt(loss_collision.item())
             losses += np.sqrt(loss.item())
 
             if phase == 'train':
@@ -224,19 +225,19 @@ for epoch in range(st_epoch, args.n_epoch):
                     loss_acc += loss
 
             if i % args.log_per_iter == 0:
-                log = '%s [%d/%d][%d/%d] Loss: %.6f %.6f %.6f, Agg: %.6f %.6f %.6f' % \
+                log = '%s [%d/%d][%d/%d] Loss: %.6f %.6f %.6f %.6f %.6f, Agg: %.6f %.6f %.6f %.6f %.6f' % \
                       (phase, epoch, args.n_epoch, i, len(dataloaders[phase]),
-                       np.sqrt(loss_position.item()),
-                       np.sqrt(loss_image.item()),
+                       np.sqrt(loss_mask.item()), np.sqrt(loss_position.item()),
+                       np.sqrt(loss_image.item()), np.sqrt(loss_collision.item()),
                        np.sqrt(loss.item()),
-                       losses_position / (i + 1),
-                       losses_image / (i + 1),
+                       losses_mask / (i + 1), losses_position / (i + 1),
+                       losses_image / (i + 1), losses_collision / (i + 1),
                        losses / (i + 1))
 
                 print(log)
 
             if phase == 'train' and i > 0 and i % args.ckp_per_iter == 0:
-                torch.save(model.state_dict(), '%s/tube_net_epoch_%d_iter_%d.pth' % (args.outf, epoch, i))
+                torch.save(model.state_dict(), '%s/net_epoch_%d_iter_%d.pth' % (args.outf, epoch, i))
 
         losses /= len(dataloaders[phase])
         log = '%s [%d/%d] Loss: %.4f, Best valid: %.4f' % \

@@ -30,42 +30,7 @@ from utils import get_masks, check_valid_masks, check_duplicate_identifier
 from utils import rand_float, init_stat, combine_stat, load_data, store_data
 from utils import decode, make_video
 
-import utils_tube as utilsTube
-from utils_tube import check_box_in_tubes 
 import pdb
-import pycocotools.mask as cocoMask
-import copy
-
-def decode_mask_to_box(mask, crop_box_size, H, W):
-    bbx_xywh = cocoMask.toBbox(mask)
-    bbx_xyxy = copy.deepcopy(bbx_xywh)
-    crop_box = copy.deepcopy(bbx_xywh)
-    
-    bbx_xyxy[2] =  bbx_xyxy[2] + bbx_xyxy[0]
-    bbx_xyxy[3] =  bbx_xyxy[3] + bbx_xyxy[1]
-    
-    bbx_xywh[0] = bbx_xywh[0]*1.0/mask['size'][1] 
-    bbx_xywh[2] = bbx_xywh[2]*1.0/mask['size'][1] 
-    bbx_xywh[1] = bbx_xywh[1]*1.0/mask['size'][0] 
-    bbx_xywh[3] = bbx_xywh[3]*1.0/mask['size'][0] 
-    bbx_xywh[0] = bbx_xywh[0] + bbx_xywh[2]/2.0 
-    bbx_xywh[1] = bbx_xywh[1] + bbx_xywh[3]/2.0 
-
-    crop_box[1] = int((bbx_xyxy[0])*W/mask['size'][1]) # w
-    crop_box[0] = int((bbx_xyxy[1])*H/mask['size'][0]) # h
-    crop_box[2] = int(crop_box_size[0])
-    crop_box[3] = int(crop_box_size[1])
-
-
-    ret = np.ones((4, crop_box_size[0], crop_box_size[1]))
-    ret[0, :, :] *= bbx_xywh[0]
-    ret[1, :, :] *= bbx_xywh[1]
-    ret[2, :, :] *= bbx_xywh[2]
-    ret[3, :, :] *= bbx_xywh[3]
-    ret = torch.FloatTensor(ret)
-    return bbx_xyxy, ret, crop_box.astype(int)   
-    
-
 
 def collate_fn(data):
     return data[0]
@@ -89,10 +54,6 @@ class PhysicsCLEVRDataset(Dataset):
         self.loader = default_loader
         self.data_dir = args.data_dir
         self.label_dir = args.label_dir
-        self.prp_dir = args.prp_dir
-        self.ann_dir = args.ann_dir
-        self.tube_dir = args.tube_dir 
-
         self.valid_idx_lst = 'valid_idx_' + self.phase + '.txt'
         self.H = 100
         self.W = 150
@@ -110,7 +71,7 @@ class PhysicsCLEVRDataset(Dataset):
             raise AssertionError("Unknown phase")
 
         if self.args.gen_valid_idx:
-            self.gen_valid_idx_from_tube_info()
+            self.gen_valid_idx()
         else:
             self.read_valid_idx()
 
@@ -133,20 +94,12 @@ class PhysicsCLEVRDataset(Dataset):
             if i % 500 == 0:
                 print("Reading valid idx %d/%d" % (i, self.st_idx + self.n_rollout))
 
-            vid = int(i/1000)
-            ann_full_dir = os.path.join(self.ann_dir, 'annotation_%02d000-%02d000'%(vid, vid+1))
-            pk_path = os.path.join(self.tube_dir, 'annotation_%05d.pk' % i)
-            prp_path = os.path.join(self.prp_dir, 'proposal_%05d.json' % i)
-            ann_path = os.path.join(ann_full_dir, 'annotation_%05d.json' % i)
-            tubes_info = utilsTube.pickleload(pk_path)
-            prp_info = utilsTube.jsonload(prp_path)
-            data = utilsTube.jsonload(ann_path)
-            data['tubes'] = tubes_info['tubes']
-            data['proposals'] = prp_info 
-            self.metadata.append(data)
+            with open(os.path.join(self.label_dir, 'sim_%05d.json' % i)) as f:
+            #with open(os.path.join(self.label_dir, 'annotation_%05d.json' % i)) as f:
+                data = json.load(f)
+                self.metadata.append(data)
 
-
-    def gen_valid_idx_from_tube_info(self):
+    def gen_valid_idx(self):
         print("Preprocessing valid idx ...")
         self.n_valid_idx = 0
         self.valid_idx = []
@@ -160,67 +113,95 @@ class PhysicsCLEVRDataset(Dataset):
             if i % 500 == 0:
                 print("Preprocessing valid idx %d/%d" % (i, self.st_idx + self.n_rollout))
 
-            vid = int(i/1000)
-            ann_full_dir = os.path.join(self.ann_dir, 'annotation_%02d000-%02d000'%(vid, vid+1))
-            #with open(os.path.join(self.label_dir, 'proposal_%05d.json' % i)) as f:
-            pk_path = os.path.join(self.tube_dir, 'annotation_%05d.pk' % i)
-            prp_path = os.path.join(self.prp_dir, 'proposal_%05d.json' % i)
-            ann_path = os.path.join(ann_full_dir, 'annotation_%05d.json' % i)
-            tubes_info = utilsTube.pickleload(pk_path)
-            prp_info = utilsTube.jsonload(prp_path)
-            data = utilsTube.jsonload(ann_path)
-            data['tubes'] = tubes_info['tubes']
-            data['proposals'] = prp_info 
-            self.metadata.append(data)
-            
+            with open(os.path.join(self.label_dir, 'sim_%05d.json' % i)) as f:
+            #with open(os.path.join(self.label_dir, 'annotation_%05d.json' % i)) as f:
+                data = json.load(f)
+                self.metadata.append(data)
             #pdb.set_trace()
+            gt = data['ground_truth']
+            gt_ids = gt['objects']
+            gt_collisions = gt['collisions']
+
             for j in range(
                 n_his * frame_offset,
-                len(data['proposals']['frames']) - frame_offset):
+                len(data['frames']) - frame_offset):
 
-                frm_list = []
-                objects = data['proposals']['frames'][j]['objects']
-                frm_list.append(j)
+                objects = data['frames'][j]['objects']
                 n_object_cur = len(objects)
+                identifiers_cur = get_identifiers(objects)
                 valid = True
 
-
-                if not check_box_in_tubes(objects, j, data['tubes']):
+                # check whether the current frame is valid:
+                if check_duplicate_identifier(objects):
                     valid = False
+
+                '''
+                masks = get_masks(objects)
+                if not check_valid_masks(masks):
+                    valid = False
+                '''
 
                 # check whether history window is valid
                 for k in range(n_his):
                     idx = j - (k + 1) * frame_offset
-                    objects = data['proposals']['frames'][idx]['objects']
-                    frm_list.append(idx)
+                    objects = data['frames'][idx]['objects']
                     n_object = len(objects)
+                    identifiers = get_identifiers(objects)
+                    # masks = get_masks(objects)
 
                     if (not valid) or n_object != n_object_cur:
                         valid = False
                         break
-                
-                    if not check_box_in_tubes(objects, idx, data['tubes']):
+                    if not check_same_identifiers(identifiers, identifiers_cur):
                         valid = False
-
-                if valid:
-                    # check whether the target is valid
-                    idx = j + frame_offset
-                    objects_nxt = data['proposals']['frames'][idx]['objects']
-                    n_object_nxt = len(objects_nxt)
-                    frm_list.append(idx)
-
-                    if (not valid) or n_object_nxt != n_object_cur:
+                        break
+                    if check_duplicate_identifier(objects):
                         valid = False
+                        break
 
+                    '''
+                    if not check_valid_masks(masks):
+                        valid = False
+                        break
+                    '''
 
-                    if utilsTube.check_object_inconsistent_identifier(frm_list, data['tubes']):
-                        valid = False
+                # check whether the target is valid
+                idx = j + frame_offset
+                objects_nxt = data['frames'][idx]['objects']
+                n_object_nxt = len(objects_nxt)
+                identifiers_nxt = get_identifiers(objects_nxt)
+                if n_object_nxt != n_object_cur:
+                    valid = False
+                elif not check_same_identifiers(identifiers_nxt, identifiers_cur):
+                    valid = False
+                elif check_duplicate_identifier(objects_nxt):
+                    valid = False
 
-                    if utilsTube.checking_duplicate_box_among_tubes(frm_list, data['tubes']):
-                        valid = False
-                    
-                    if not check_box_in_tubes(objects_nxt, idx, data['tubes']):
-                        valid = False
+                # check if detected the right objects for collision
+                for k in range(len(gt_collisions)):
+                    if 0 <= gt_collisions[k]['frame'] - j < frame_offset:
+                        gt_obj = gt_collisions[k]['object']
+
+                        id_0 = gt_obj[0]
+                        id_1 = gt_obj[1]
+                        for t in range(len(gt_ids)):
+                            if id_0 == gt_ids[t]['id']:
+                                id_x = get_identifier(gt_ids[t])
+                            if id_1 == gt_ids[t]['id']:
+                                id_y = get_identifier(gt_ids[t])
+
+                        # id_0 = get_identifier(gt_ids[gt_obj[0]])
+                        # id_1 = get_identifier(gt_ids[gt_obj[1]])
+                        if not check_contain_id(id_x, identifiers_cur):
+                            valid = False
+                        if not check_contain_id(id_y, identifiers_cur):
+                            valid = False
+
+                '''
+                masks_nxt = get_masks(objects_nxt)
+                if not check_valid_masks(masks_nxt):
+                    valid = False
+                '''
 
                 if valid:
                     self.valid_idx.append((i - self.st_idx, j))
@@ -243,7 +224,7 @@ class PhysicsCLEVRDataset(Dataset):
         return self.n_valid_idx
 
     def __getitem__(self, idx):
-        #pdb.set_trace()
+        pdb.set_trace()
         n_his = self.args.n_his
         frame_offset = self.args.frame_offset
         idx_video, idx_frame = self.valid_idx[idx][0], self.valid_idx[idx][1]
@@ -254,7 +235,7 @@ class PhysicsCLEVRDataset(Dataset):
             idx_frame - n_his * frame_offset,
             idx_frame + frame_offset + 1, frame_offset):
 
-            frame = self.metadata[idx_video]['proposals']['frames'][i]
+            frame = self.metadata[idx_video]['frames'][i]
             #frame_filename = frame['frame_filename']
             frame_filename = os.path.join('video_'+str(idx_video).zfill(5), str(frame['frame_index']+1)+'.png') 
 
@@ -275,13 +256,31 @@ class PhysicsCLEVRDataset(Dataset):
                     attrs.append(encode_attr(
                         material, shape, self.bbox_size, self.args.attr_dim))
 
-                bbox_xyxy, xyhw_exp, crop_box = decode_mask_to_box(objects[j]['mask'],\
-                        [self.bbox_size, self.bbox_size], self.H, self.W)
-                img_crop = normalize(crop(img, crop_box, self.H, self.W), 0.5, 0.5).permute(2, 0, 1)
-                tube_id = utilsTube.get_tube_id_from_bbox(bbox_xyxy, frame['frame_index'], self.metadata[idx_video]['tubes'])
-                if tube_id==-1:
-                    pdb.set_trace()
-                s = torch.cat([xyhw_exp, img_crop], 0).unsqueeze(0), tube_id
+                mask_raw = decode(objects[j]['mask'])
+                mask = cv2.resize(mask_raw, (self.W, self.H), interpolation=cv2.INTER_NEAREST)
+                # cv2.imshow("mask", mask * 255)
+                # cv2.waitKey(0)
+
+                bbox, pos = convert_mask_to_bbox(mask_raw, self.H, self.W, self.bbox_size)
+                # print(pos)
+
+                pos_mean = torch.FloatTensor(np.array([self.H / 2., self.W / 2.]))
+                pos_mean = pos_mean.unsqueeze(1).unsqueeze(1)
+                pos_std = pos_mean
+
+                pos = normalize(pos, pos_mean, pos_std)
+                # print(pos)
+                mask_crop = normalize(crop(mask, bbox, self.H, self.W), 0.5, 1).unsqueeze(0)
+                img_crop = normalize(crop(img, bbox, self.H, self.W), 0.5, 0.5).permute(2, 0, 1)
+
+                identifier = get_identifier(objects[j])
+
+                # print(torch.max(pos), torch.min(pos))
+                # print('mask_crop size', mask_crop.size())
+                # print('pos size', pos.size())
+                # print('img_crop size', img_crop.size())
+
+                s = torch.cat([mask_crop, pos, img_crop], 0).unsqueeze(0), identifier
                 object_inputs.append(s)
 
             objs.append(object_inputs)
@@ -298,15 +297,19 @@ class PhysicsCLEVRDataset(Dataset):
                 for y in range(n_objects):
                     id_x = objs[0][x][1]
                     id_y = objs[i][y][1]
-                    if id_x == id_y:
+                    if check_same_identifier(id_x, id_y):
                         feats[x] = torch.cat([feats[x], objs[i][y][0]], 1)
+
+        # for i in range(1, self.args.state_dim * (n_his + 2), self.args.state_dim):
+        # print(feats[0][0, i, 0, 0], feats[0][0, i, 1, 1])
+        # print()
 
         try:
             feats = torch.cat(feats, 0)
         except:
             print(idx_video, idx_frame)
+        # print("feats shape", feats.size())
 
-        #pdb.set_trace()
         ### prepare relation attributes
         n_relations = n_objects * n_objects
         Ra = torch.FloatTensor(
@@ -322,12 +325,62 @@ class PhysicsCLEVRDataset(Dataset):
         for i in range(n_objects):
             for j in range(n_objects):
                 idx = i * n_objects + j
-                Ra[idx, 1::relation_dim] = feats[i, 0::state_dim] - feats[j, 0::state_dim]  # x
-                Ra[idx, 2::relation_dim] = feats[i, 1::state_dim] - feats[j, 1::state_dim]  # y
-                Ra[idx, 3::relation_dim] = feats[i, 2::state_dim] - feats[j, 2::state_dim]  # h
-                Ra[idx, 4::relation_dim] = feats[i, 3::state_dim] - feats[j, 3::state_dim]  # w
+                Ra[idx, 1::relation_dim] = feats[i, 1::state_dim] - feats[j, 1::state_dim]  # x
+                Ra[idx, 2::relation_dim] = feats[i, 2::state_dim] - feats[j, 2::state_dim]  # y
+
+        # add collision attr
+        gt = self.metadata[idx_video]['ground_truth']
+        gt_ids = gt['objects']
+        gt_collisions = gt['collisions']
 
         label_rel = torch.FloatTensor(np.ones((n_objects * n_objects, 1)) * -0.5)
+
+        if self.args.edge_superv:
+            for i in range(
+                idx_frame - n_his * frame_offset,
+                idx_frame + frame_offset + 1, frame_offset):
+
+                for j in range(len(gt_collisions)):
+                    frame_id = gt_collisions[j]['frame']
+                    if 0 <= frame_id - i < self.args.frame_offset:
+                        id_0 = gt_collisions[j]['object'][0]
+                        id_1 = gt_collisions[j]['object'][1]
+                        for k in range(len(gt_ids)):
+                            if id_0 == gt_ids[k]['id']:
+                                id_x = get_identifier(gt_ids[k])
+                            if id_1 == gt_ids[k]['id']:
+                                id_y = get_identifier(gt_ids[k])
+
+                        # id_0 = get_identifier(gt_ids[gt_collisions[j]['object'][0]])
+                        # id_1 = get_identifier(gt_ids[gt_collisions[j]['object'][1]])
+
+                        for k in range(n_objects):
+                            if check_same_identifier(objs[0][k][1], id_x):
+                                x = k
+                            if check_same_identifier(objs[0][k][1], id_y):
+                                y = k
+
+                        idx_rel_xy = x * n_objects + y
+                        idx_rel_yx = y * n_objects + x
+
+                        # print(x, y, n_objects)
+
+                        idx = i - (idx_frame - n_his * frame_offset)
+                        idx /= frame_offset
+                        Ra[idx_rel_xy, int(idx) * relation_dim] = 0.5
+                        Ra[idx_rel_yx, int(idx) * relation_dim] = 0.5
+
+                        if i == idx_frame + frame_offset:
+                            label_rel[idx_rel_xy] = 1
+                            label_rel[idx_rel_yx] = 1
+
+        '''
+        print(feats[0, -state_dim])
+        print(feats[0, -state_dim+1])
+        print(feats[0, -state_dim+2])
+        print(feats[0, -state_dim+3])
+        print(feats[0, -state_dim+4])
+        '''
 
         '''
         ### change absolute pos to relative pos
@@ -343,8 +396,6 @@ class PhysicsCLEVRDataset(Dataset):
         label_obj = feats[:, -state_dim:]
         label_obj[:, 1] -= feats[:, -2*state_dim+1]
         label_obj[:, 2] -= feats[:, -2*state_dim+2]
-        label_obj[:, 3] -= feats[:, -2*state_dim+3]
-        label_obj[:, 4] -= feats[:, -2*state_dim+4]
         rel = prepare_relations(n_objects)
         rel.append(Ra[:, :-relation_dim])
 
