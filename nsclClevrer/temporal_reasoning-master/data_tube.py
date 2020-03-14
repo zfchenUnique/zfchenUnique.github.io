@@ -263,7 +263,7 @@ class PhysicsCLEVRDataset(Dataset):
 
             vid = int(idx_video/1000)
             ann_full_dir = os.path.join(self.data_dir, 'image_%02d000-%02d000'%(vid, vid+1))
-            img = self.loader(os.path.join(self.data_dir, frame_filename))
+            img = self.loader(os.path.join(ann_full_dir, frame_filename))
             img = np.array(img)[:, :, ::-1].copy()
             img = cv2.resize(img, (self.W, self.H), interpolation=cv2.INTER_AREA).astype(np.float) / 255.
 
