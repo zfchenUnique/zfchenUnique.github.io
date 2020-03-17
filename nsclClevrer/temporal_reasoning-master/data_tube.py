@@ -135,7 +135,8 @@ class PhysicsCLEVRDataset(Dataset):
 
             vid = int(i/1000)
             ann_full_dir = os.path.join(self.ann_dir, 'annotation_%02d000-%02d000'%(vid, vid+1))
-            pk_path = os.path.join(self.tube_dir, 'annotation_%05d.pk' % i)
+            #pk_path = os.path.join(self.tube_dir, 'annotation_%05d.pk' % i)
+            pk_path = os.path.join(self.tube_dir, 'proposal_%05d.pk' % i)
             prp_path = os.path.join(self.prp_dir, 'proposal_%05d.json' % i)
             ann_path = os.path.join(ann_full_dir, 'annotation_%05d.json' % i)
             tubes_info = utilsTube.pickleload(pk_path)
@@ -163,7 +164,8 @@ class PhysicsCLEVRDataset(Dataset):
             vid = int(i/1000)
             ann_full_dir = os.path.join(self.ann_dir, 'annotation_%02d000-%02d000'%(vid, vid+1))
             #with open(os.path.join(self.label_dir, 'proposal_%05d.json' % i)) as f:
-            pk_path = os.path.join(self.tube_dir, 'annotation_%05d.pk' % i)
+            #pk_path = os.path.join(self.tube_dir, 'annotation_%05d.pk' % i)
+            pk_path = os.path.join(self.tube_dir, 'proposal_%05d.pk' % i)
             prp_path = os.path.join(self.prp_dir, 'proposal_%05d.json' % i)
             ann_path = os.path.join(ann_full_dir, 'annotation_%05d.json' % i)
             tubes_info = utilsTube.pickleload(pk_path)
@@ -340,13 +342,13 @@ class PhysicsCLEVRDataset(Dataset):
         feats[:, 1] = 0
         feats[:, 2] = 0
         '''
-
+        #pdb.set_trace()
         x = feats[:, :-state_dim]
         label_obj = feats[:, -state_dim:]
+        label_obj[:, 0] -= feats[:, -2*state_dim+0]
         label_obj[:, 1] -= feats[:, -2*state_dim+1]
         label_obj[:, 2] -= feats[:, -2*state_dim+2]
         label_obj[:, 3] -= feats[:, -2*state_dim+3]
-        label_obj[:, 4] -= feats[:, -2*state_dim+4]
         rel = prepare_relations(n_objects)
         rel.append(Ra[:, :-relation_dim])
 

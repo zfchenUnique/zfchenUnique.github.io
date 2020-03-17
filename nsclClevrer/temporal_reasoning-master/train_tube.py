@@ -95,7 +95,7 @@ cv2.setNumThreads(0)
 if args.env == 'CLEVR':
     #args.n_rollout = 11000
     args.time_step = 128
-    args.n_rollout = 10000
+    args.n_rollout = 11000
     args.train_valid_ratio = 0.9
 else:
     raise AssertionError("Unsupported env")
@@ -192,7 +192,7 @@ for epoch in range(st_epoch, args.n_epoch):
                 attr, x, Rr, Rs, Ra, label_obj, label_rel = data
                 pred_obj, pred_rel = model(
                     attr, x, Rr, Rs, Ra, node_r_idx, node_s_idx, args.pstep)
-            pdb.set_trace()
+            #pdb.set_trace()
             position = pred_obj[:, :4]
             image = pred_obj[:, 4:]
 
@@ -203,7 +203,7 @@ for epoch in range(st_epoch, args.n_epoch):
             print('img\n', image[0])
             '''
 
-            loss_position = criterionMSE(position, label_obj[:, 1:5])
+            loss_position = criterionMSE(position, label_obj[:, :4])
             loss_image = criterionMSE(image, label_obj[:, 4:])
             loss = loss_position * args.lam_position
             loss += loss_image * args.lam_image

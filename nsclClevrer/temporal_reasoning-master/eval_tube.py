@@ -139,7 +139,7 @@ print("model #params: %d" % count_parameters(model))
 if args.epoch == 0 and args.iter == 0:
     model_path = os.path.join(args.outf, 'net_best.pth')
 else:
-    model_path = os.path.join(args.outf, 'net_epoch_%d_iter_%d.pth' % (args.epoch, args.iter))
+    model_path = os.path.join(args.outf, 'tube_net_epoch_%d_iter_%d.pth' % (args.epoch, args.iter))
 
 print("Loading saved ckp from %s" % model_path)
 model.load_state_dict(torch.load(model_path))
@@ -294,7 +294,7 @@ def forward_step(frames, model, objs_gt=None):
         pred_obj, pred_rel, pred_feat = model(
             attr, feats, Rr, Rs, Ra, node_r_idx, node_s_idx, args.pstep, ret_feat=True)
         # print(time.time() - st_time)
-        pdb.set_trace()
+        #pdb.set_trace()
     # print("Time - predict", time.time() - st_time)
 
     #### transform format
@@ -410,7 +410,8 @@ for test_idx in range(len(test_list)):
             
     vid = int(test_idx2/1000)
     ann_full_dir = os.path.join(args.ann_dir, 'annotation_%02d000-%02d000'%(vid, vid+1))
-    pk_path = os.path.join(args.tube_dir, 'annotation_%05d.pk' % test_idx2)
+    #pk_path = os.path.join(args.tube_dir, 'annotation_%05d.pk' % test_idx2)
+    pk_path = os.path.join(args.tube_dir, 'proposal_%05d.pk' % test_idx2)
     prp_path = os.path.join(args.prp_dir, 'proposal_%05d.json' % test_idx2)
     ann_path = os.path.join(ann_full_dir, 'annotation_%05d.json' % test_idx2)
     tubes_info = utilsTube.pickleload(pk_path)
@@ -563,7 +564,7 @@ for test_idx in range(len(test_list)):
 
         # rollout for extra 12 frames
         # if what_if == -1:
-        pdb.set_trace()
+        #pdb.set_trace()
         st_idx = len(frames_pred)
         for idx in range(st_idx, st_idx + 12):
             objs_pred, rels_pred, feats_pred = forward_step(frames_pred[idx-n_his-1:idx], model)
@@ -634,8 +635,8 @@ for test_idx in range(len(test_list)):
 
         if args.video:
             path = os.path.join(args.evalf, video_name)
-            pdb.set_trace()
             utilsTube.make_video_from_tube_ann(path, frames_pred, H, W, bbox_size, args.back_ground, args.store_img)
+            pdb.set_trace()
 
     with open(des_path, 'w') as f:
         json.dump(des_pred, f)

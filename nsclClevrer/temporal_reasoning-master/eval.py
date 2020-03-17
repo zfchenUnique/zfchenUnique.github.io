@@ -487,10 +487,10 @@ for test_idx in range(len(test_list)):
 
         frames_gt.append([frame_objs, frame_rels, None])
 
-    pdb.set_trace()
     if args.video:
         path = os.path.join(args.evalf, '%d_gt' % test_list[test_idx])
         make_video(path, frames_gt, H, W, bbox_size, args.back_ground, args.store_img)
+    pdb.set_trace()
 
     if args.use_attr:
         des_pred['objects'] = []

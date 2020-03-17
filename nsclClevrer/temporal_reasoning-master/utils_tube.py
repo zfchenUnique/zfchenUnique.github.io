@@ -12,7 +12,7 @@ import cv2
 import pdb
 
 def sort_by_x(obj):
-    return obj[1][0, 0, 0, 0]
+    return obj[1][0, 1, 0, 0]
 
 def make_video_from_tube_ann(filename, frames, H, W, bbox_size, back_ground=None, store_img=False):
 
@@ -59,9 +59,9 @@ def make_video_from_tube_ann(filename, frames, H, W, bbox_size, back_ground=None
         objs = objs.copy()
 
 
+        #pdb.set_trace()
         # obj: attr, [x, y, h, w, img_crop], id
         objs.sort(key=sort_by_x)
-
         n_object = len(objs)
         for j in range(n_object):
             obj = objs[j][1][0]
@@ -96,8 +96,11 @@ def make_video_from_tube_ann(filename, frames, H, W, bbox_size, back_ground=None
                 # check if the position is inf
                 continue
 
-            x = int(obj[0, 0, 0] * H - bbox_size/2)
-            y = int(obj[1, 0, 0] * W - bbox_size/2)
+            # differences between crop box and xyxy!!!
+            #y = int(obj[0, 0, 0] * W - bbox_size/2)
+            #x = int(obj[1, 0, 0] * H - bbox_size/2)
+            y = int(obj[0, 0, 0] * W - obj[2, 0, 0] * W /2)
+            x = int(obj[1, 0, 0] * H - obj[3, 0, 0] * H /2)
 
             # print(x, y, H, W)
             h, w = int(bbox_size), int(bbox_size)
