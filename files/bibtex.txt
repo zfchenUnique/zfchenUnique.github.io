@@ -1,3 +1,19 @@
+
+
+@inproceedings{liu2021cvpr,
+  title={Cops-Ref: A new Dataset and Task on Compositional Referring Expression Comprehension},
+  author={Liu, Yuan and Chen, Jingyuan and Chen, Zhenfang and Deng, Bing and Huang, Jianqiang and Zhang Hanwang},
+  booktitle={CVPR},
+  year={2021}
+}
+
+@inproceedings{zfchen2021iclr,
+    title={Grounding Physical Concepts of Objects and Events Through Dynamic Visual Reasoning},
+    author={Chen, Zhenfang and Mao, Jiayuan and Wu, Jiajun and Wong, Kwan-Yee K and Tenenbaum, Joshua B. and Gan, Chuang},
+    booktitle={International Conference on Learning Representations},
+    year={2021}
+}
+
 @inproceedings{chen2020cvpr,
   title={Cops-Ref: A new Dataset and Task on Compositional Referring Expression Comprehension},
   author={Chen, Zhenfang and Wang, Peng and Ma, Lin and Wong, Kwan-Yee K and Wu, Qi},
