@@ -1,0 +1,11 @@
+CUDA_VISIBLE_DEVICES=3 python train_tube.py \
+--gen_valid_idx 0 \
+--edge_superv 0 \
+--data_dir /home/zfchen/code/nsclClevrer/clevrer/ \
+--prp_dir /home/zfchen/code/nsclClevrer/clevrer/proposals \
+--tube_dir /home/zfchen/code/nsclClevrer/clevrer/tubeProposalsGt \
+--ann_dir /home/zfchen/code/nsclClevrer/clevrer \
+--num_workers 4 \
+--resume_epoch 0 \
+--tube_mode 1 \
+--resume_iter 0
