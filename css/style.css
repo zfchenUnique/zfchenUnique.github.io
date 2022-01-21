@@ -94,10 +94,13 @@ img {
 /*  Paper styles
     FontAwesome reference: http://astronautweb.co/snippet/font-awesome/
 --------------------------------------*/
+
 #paper {
     border-bottom: solid 1px #EEE;
-    /* margin-bottom: 20px; */
-    max-height: 120px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    /* max-height: 120px; */
+    min-height: 100px;
     align-items: center;
 }
 
