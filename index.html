@@ -6,7 +6,155 @@
     <link rel="stylesheet" href="https://at.alicdn.com/t/font_1155135_oq1ut3zz63j.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/fonts.css">
-</head>
+  </head>
+
+ <style type="text/css">
+
+    body {
+      font-family: "Merriweather", "PT Serif", Georgia, "Times New Roman", "STSong", Serif;
+      font-weight: 300;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #2E2E2E;
+      line-height: 1.15em;
+      font-family: 'Open Sans','Hiragino Sans GB','Microsoft YaHei','WenQuanYi Micro Hei',sans-serif;
+      text-rendering: geometricPrecision;
+    }
+
+    .grid-container {
+      /*columns: 3 150px; */
+      columns: 3 auto;
+      column-gap: 1.5rem;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .grid-container div {
+      /*width: auto;*/
+      /*width: 150px;*/
+      margin: 0 1.5rem 1.5rem 0;
+      display: inline-block;
+      width: 95%;
+      border: solid 2px black;
+      padding: 5px;
+      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+      transition: all 0.25s ease-in-out;
+
+      overflow: hidden;
+      display: block;
+      position: relative;
+      text-align: center;
+    }
+/*    .grid-container div:hover img {
+      filter: grayscale(0);
+    }*/
+    .grid-container div:hover {
+      border-color: coral;
+    }
+    .grid-container div img {
+      width: 70%;
+      /*filter: grayscale(100%);*/
+      border-radius: 5px;
+      transition: all 0.25s ease-in-out;
+
+      margin: auto;
+    }
+    .grid-container div p {
+      margin: 5px 0;
+      padding: 0;
+      text-align: center;
+      font-style: italic;
+      font-family: sans-serif;
+      font-size:15px;
+    }
+
+    #pagecontainer {
+      background-color: #fff;
+      /*min-height: calc(100vh - 510px);*/
+    }
+
+    #post-content {
+      padding-top: 36px;
+      border-top: 1px dashed #999999;
+      line-height: 1.6rem;
+      padding-bottom: 100px;
+    }
+
+    #post-content>blockquote:first-child {
+      padding-top: 0.4em;
+      padding-bottom: 0.4em;
+      margin-bottom:2em;
+      margin-left: 0;
+    }
+
+    .nav {
+      border-bottom: none;
+      height: auto;
+    }
+
+    .inner-page {
+      width: 90%;
+      max-width: 300px;
+      /*max-width: 1000px;*/
+      margin: auto;
+    }
+
+    h1 {
+      border-bottom: 0;
+    }
+
+    #header {
+      padding-bottom: 32px;
+    }
+
+    #header h1 {
+      text-align: center;
+      white-space: pre-wrap;
+      width: 90%;
+      margin: 81px auto 48px auto;
+    }
+
+    h1 {
+      font-size: 3.6rem;
+      letter-spacing: -2px;
+      text-indent: -3px;
+    }
+
+    h2 {
+      margin-top: 2em;
+    }
+
+    .pure-menu-active>.pure-menu-link, .pure-menu-link:hover, .pure-menu-link:focus {
+        background-color: initial;
+        border: #777 solid 1px;
+    }
+
+    .post-meta {
+      font-style: italic;
+      text-align: center;
+      color: #7a7a7a;
+    }
+
+    div.highlighter-rouge {
+      padding: 8px;
+      border: 1px #777 solid;
+      line-height: 1.2rem;
+      font-family: Menlo, Monaco, "Courier New", monospace;
+    }
+
+    div.highlighter-rouge pre{
+      font-size: 0.95em;
+      overflow: hidden;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    a {
+      color: #463F5C;
+      text-decoration: underline;
+    }
+  </style>
 
 <body>
 	<div class="main-container">
@@ -62,18 +210,18 @@
 		<div class="content-container">
 			<h2>About Me</h2>
 			<p>
-			I am currently a researcher at <a href="https://mitibmwatsonailab.mit.edu" target="_blank">MIT-IBM Watson AI Lab </a> in Cambridge, MA, USA. 
-			I received my Ph.D. degree from the Department of Computer Science at <a href="https://www.hku.hk" target="_blank"> The University of Hong Kong</a>.
-			I studied at the Computer Vision Lab, advised by <a href="http://i.cs.hku.hk/~kykwong/" target="_blank">Dr. Kenneth K.Y. Wong</a>. I got my B.Sc. from <a href="http://www.sysu.edu.cn/en/index.htm" target="_blank">Sun Yat-sen University</a> in 2016.</p>
-
-			<p>My interests are centered around machine learning and its applications to computer vision and natural language processing. Current research topics include dynamic visual reasoning, multimodal learning, and image retrieval.</p>
+			I am a researcher at <a href="https://mitibmwatsonailab.mit.edu" target="_blank">MIT-IBM Watson AI Lab </a> in Cambridge, MA, USA. 
+			I received my Ph.D. degree from the Department of Computer Science at <a href="https://www.hku.hk" target="_blank"> The University of Hong Kong</a>, where I was a member of the Computer Vision Lab, advised by <a href="http://i.cs.hku.hk/~kykwong/" target="_blank">Prof. Kenneth K.Y. Wong</a>.
+			Prior to that, I got my B.Sc. from <a href="http://www.sysu.edu.cn/en/index.htm" target="_blank">Sun Yat-sen University</a> in 2016.</p>
+			<p>
+			My interests are centered around machine learning and its applications to computer vision and natural language processing. My ultimate research goal is to develop an AI system that can perceive and reason about the physical world, and communicate with humans in natural language.</p>
     	</div>
-    
 	
     <div class="content-container">
 		<h2>News</h2>
 			<ul>
-				[September 2022] Serve as a Senior Program Committee (SPC) Member for AAAI 2023. <br>
+				[January 2023]<a href="https://arxiv.org/abs/2109.00681" target="_blank"> A paper </a> about face video inpainting has been accepted by TIP 2023. <br>
+        [September 2022] Serve as a Senior Program Committee (SPC) Member for AAAI 2023. <br>
 				[September 2022] A paper (<a href="https://ywq.github.io/s3nerf/" target="_blank">S<sup>3</sup>-NeRF</a>) about photometric stereo has been accepted by NeurIPS 2022. <br>
 				[September 2022] A paper about <a href="https://openreview.net/forum?id=yPJ9A0GWLg0" target="_blank">Embodied Concept Learning</a> has been accepted by CoRL 2022. <br>
 				[July 2022]&nbsp; We are organizing a workshop about <a href="https://mvcs-workshop.github.io" target="_blank">Machine Visual Common Sense</a> on ECCV 2022.<br>
@@ -86,11 +234,73 @@
 				-->
 			</ul>
 	</div>
+  
+
+ <div class="content-container">
+  <h2>Research highlights</h2>
+  <div class="grid-container">
+  
+ <div>
+  <a href="">
+    <img src="images/ipvr.png" height="150" alt="" /></a>
+    <p>Interactive Prompting for Visual Reasoning</p>
+  </div>
+
+
+  <div>
+  <a href="https://comphyreasoning.github.io">
+    <img src="images/comPhy.gif" height="150" alt="" /></a>
+    <p>ICLR 2022: ComPhy</p>
+  </div>
+
+  <div>
+  <a href="http://dcl.csail.mit.edu">
+    <img src="images/dcl.gif" height="150" alt="" /></a>
+    <p>ICLR 2021: Dynamic Concept Learner</p>
+  </div>
+
+<!--
+  <div>
+  <a href="http://vrdp.csail.mit.edu">
+    <img src="images/vrdp.gif" height="130" alt="" /></a>
+    <p>NeurIPS21: VRDP</p>
+  </div>
+-->
+  <div>
+  <a href="http://www.visionlab.cs.hku.hk/publications/chen_acl2019.pdf">
+    <img src="images/acl2019.png" height="150" alt="" /></a>
+    <p>ACL19: WSSTG</p>
+  </div>
+
+
+  <div>
+  <a href="http://ecl.csail.mit.edu/">
+    <img src="images/corl2022.png" height="150" alt="" /></a>
+    <p>CoRL22: Embodied Concept Learner</p>
+  </div>
+  
+  <div>
+  <a href="https://ywq.github.io/s3nerf">
+    <img src="images/s3nerf_neurips2022.gif" height="150" alt="" /></a>
+    <p>NeurIPS22: S<sup>3</sup>-NeRF</p>
+  </div>
+</div>
 
 	<div class="content-container">
 		<h2>Publications <a class="pdflink" href="files/bibtex.txt" target="_blank">[Bibtex]</a></h2>
 
-		<div class="hflex-container" id="paper">
+        <div class="hflex-container" id="paper">
+          <img src="images/TIP2021_FaceVideoInpaint.png">
+            <div>
+              <p class="title">Deep Face Video Inpainting via UV Mapping</p>
+              <p class="authors">Wenqi Yang, <b>Zhenfang Chen</b>, Chaofeng Chen, Guanying Chen, Kwan-Yee K. Wong</p>
+              <p class="venue">IEEE Transactions on Image Processing (TIP), 2023</p>
+              <a class="pdflink" href="https://arxiv.org/abs/2109.00681" target="_blank">Paper</a>
+              <a class="codelink" href="" target="_blank">Code</a>
+            </div>
+        </div>
+
+		    <div class="hflex-container" id="paper">
          	<img src="images/s3nerf_neurips2022.gif">
             <div>
               <p class="title">S<sup>3</sup>-NeRF: Neural Reflectance Field from Shading and Shadow under a Single Viewpoint</p>
@@ -223,7 +433,7 @@
 	    <div class="hflex-container" id="paper">
 	      	<img src="images/acl2019.png">
 	        <div>
-	     		<p class="title">Weakly Supervised Grounding Natural Sentence in Videos</p>
+	     		<p class="title">Weakly-Supervised Spatio-Temporally Grounding Natural Sentence in Video</p>
 	      		<p class="authors"><b>Zhenfang Chen</b>, Lin Ma, Wenhan Luo, Kwan-Yee K. Wong</p>
 	      		<p class="venue">ACL2019 (<strong>Oral Presentation</strong>)</p>
 	      		<a class="pdflink"><a href="http://www.visionlab.cs.hku.hk/publications/chen_acl2019.pdf" target="_blank">Paper</a>
