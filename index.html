@@ -27,8 +27,8 @@
       columns: 4 auto;
       column-gap: 1rem;
       width: 130%;
-      hieght: 450px;
-      margin: 0 auto;
+      max-height: 800px;
+      margin: auto;
     }
     .grid-container div {
       /*width: auto;*/
@@ -162,20 +162,20 @@
 
 .recent-work {
     width: 70%;
-    overflow-y: scroll;
+    overflow: scroll;
     margin: auto;
 }
 .recent-work::-webkit-scrollbar {
     background: none;
     height: 8px;
-    width: 20px;
+    width: 8px;
 }
 
 .recent-work::-webkit-scrollbar-track {
     background: #eee;
     border-radius: 4px;
-    margin-left: 240px;
-    margin-right: 240px;
+    margin-left: 200px;
+    margin-right: 200px;
 }
 
 .recent-work::-webkit-scrollbar-thumb {
@@ -189,7 +189,8 @@
 
 
 .slider {
-    width: 88%;
+    width: 100%;
+    overflow: scroll;
     margin: auto;
 }
 
@@ -278,7 +279,7 @@
 <div class="slider">
 <h3>Recent Research highlights</h3>
 <div class="recent-work">
-<div class="grid-container" style="margin-bottom:-10px;margin-top:auto;">
+<div class="grid-container" style="margin-top:auto;">
 
   <div>
   <a href="https://vis-www.cs.umass.edu/genome/">
