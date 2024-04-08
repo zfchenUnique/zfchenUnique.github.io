@@ -1,380 +1,229 @@
-<html>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <head>
+<!DOCTYPE HTML>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Zhenfang Chen</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://at.alicdn.com/t/font_1155135_oq1ut3zz63j.css">
+
+    <meta name="author" content="Guanying Chen">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/fonts.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_1155135_oq1ut3zz63j.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115381046-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-115381046-1');
+    </script>
   </head>
 
-<style type="text/css">
-
-    body {
-      font-family: "Merriweather", "PT Serif", Georgia, "Times New Roman", "STSong", Serif;
-      font-weight: 300;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      color: #2E2E2E;
-      line-height: 1.15em;
-      font-family: 'Open Sans','Hiragino Sans GB','Microsoft YaHei','WenQuanYi Micro Hei',sans-serif;
-      text-rendering: geometricPrecision;
-    }
-
-    .grid-container {
-      /*columns: 3 150px; */
-      columns: 4;
-      width: 100%;
-      max-height: 800px;
-    }
-    .grid-container div {
-      /*width: auto;*/
-      /*width: 150px;*/
-      margin: 0 1.5rem 1.5rem 0;
-      display: inline-block;
-      width: 95%;
-      border: solid 2px black;
-      padding: 5px;
-      box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-      border-radius: 5px;
-      transition: all 0.25s ease-in-out;
-
-      display: block;
-      position: relative;
-      text-align: center;
-    }
-/*    .grid-container div:hover img {
-      filter: grayscale(0);
-    }*/
-    .grid-container div:hover {
-      border-color: coral;
-    }
-    .grid-container div img {
-      width: 100%;
-      /*filter: grayscale(100%);*/
-      border-radius: 5px;
-      transition: all 0.25s ease-in-out;
-
-      margin: auto;
-    }
-    .grid-container div p {
-      margin: 5px 0;
-      padding: 0;
-      text-align: center;
-      font-style: italic;
-      font-family: sans-serif;
-      font-size:15px;
-    }
-
-    #pagecontainer {
-      background-color: #fff;
-      /*min-height: calc(100vh - 510px);*/
-    }
-
-    #post-content {
-      padding-top: 36px;
-      border-top: 1px dashed #999999;
-      line-height: 1.6rem;
-      padding-bottom: 100px;
-    }
-
-    #post-content>blockquote:first-child {
-      padding-top: 0.4em;
-      padding-bottom: 0.4em;
-      margin-bottom:2em;
-      margin-left: 0;
-    }
-
-    .nav {
-      border-bottom: none;
-      height: auto;
-    }
-
-    .inner-page {
-      width: 100%;
-      /*max-width: 1000px;*/
-      margin: auto;
-    }
-
-    h1 {
-      border-bottom: 0;
-    }
-
-    #header {
-      padding-bottom: 32px;
-    }
-
-    #header h1 {
-      text-align: center;
-      white-space: pre-wrap;
-      width: 90%;
-      margin: 81px auto 48px auto;
-    }
-
-    h1 {
-      font-size: 3.6rem;
-      letter-spacing: -2px;
-      text-indent: -3px;
-    }
-
-    h2 {
-      margin-top: 2em;
-    }
-
-    h3 {
-      margin-top: 2em;
-      letter-spacing: -2px;
-      text-indent: 220px;
-    }
-
-    .pure-menu-active>.pure-menu-link, .pure-menu-link:hover, .pure-menu-link:focus {
-        background-color: initial;
-        border: #777 solid 1px;
-    }
-
-    .post-meta {
-      font-style: italic;
-      text-align: center;
-      color: #7a7a7a;
-    }
-
-    div.highlighter-rouge {
-      padding: 0px;
-      border: 1px #777 solid;
-      line-height: 1.2rem;
-      font-family: Menlo, Monaco, "Courier New", monospace;
-    }
-
-    div.highlighter-rouge pre{
-      font-size: 0.95em;
-      word-break: break-word;
-      white-space: pre-wrap;
-    }
-
-    a {
-      color: #463F5C;
-      text-decoration: underline;
-    }
-
-.recent-work {
-    width: 70%;
-    overflow: scroll;
-    margin: auto;
-}
-.recent-work::-webkit-scrollbar {
-    background: none;
-    height: 8px;
-    width: 8px;
-}
-
-.recent-work::-webkit-scrollbar-track {
-    background: #eee;
-    border-radius: 4px;
-}
-
-.recent-work::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
-}
-
-.recent-work::-webkit-scrollbar-thumb:hover {
-    background: #999;
-}
-
-
-.slider {
-    width: 100%;
-    overflow: scroll;
-    margin: auto;
-}
-
-.slider a:hover {
-    border: none
-}
-
-  </style>
-
-
 <body>
-	<div class="main-container">
-		<br>
-		<div class="content-container">
-        <div class="hflex-container" id="profile">
-        		<div>
-					<br/>
-					<img src="images/vegas_2022.JPG">
-					<font size="-1">
-					  <figcaption>The phote was token at Las Vegas in 2022.</figcaption>
-					</font>
-				</div>
-				<div>
-					<br/>
-					<br/>
-					<b style="font-size:25px"><em>Chen Zhenfang</em></b>
-					<b class="font-song" style="font-size:25px">(陈振方)</b>
-					<br>
-					<table>
-				        <tbody>
-				        	<br/>
-				        	<tr>
-				        		<td width="60px"><b>Email</b>: </td>
-				        		<td>chenzhenfang2013 [at] gmail.com</td>
-				        	</tr>
-				        	<br/>
-				        	<tr>
-				        	    <td width="60px"><b>Address</b>: </td>
-				        		<td>314 Main Street, Cambridge, MA, USA, 02142.</td>
-				        	</tr>
-							<tr>
-								<td colspan="2">
-									<br>
-									<a href="https://github.com/zfchenUnique" target="_blank"><i class="fa fa-github" style="color:black;"></i>&nbsp;Github</a>
-									<a href="https://www.linkedin.com/in/%E6%8C%AF%E6%96%B9-%E9%99%88-512011bb/" target="_blank"><i class="fa fa-2x fa-linkedin-square" style="color:black;"></i>&nbsp;
-									Linkedin</a>
-									<!--<a href="files/cv.txt" target="_blank"><i class="iconfont icon-jianli" style="color:black;"></i>&nbsp;CV</a> -->
-                  					<a href="https://dblp.org/pers/c/Chen:Zhenfang.html" target="_blank"><i class="iconfont icon-gscholar" style="color:black;"></i>&nbsp;DBLP</a>
-								</td>
-								</td>
-							</tr>
-				        </tbody>
-		        	</table>
-			    </div>
-        </div>
-		</div>
-		<div class="content-container">
-			<h2>About Me</h2>
-			<p>
-			I am a researcher at <a href="https://mitibmwatsonailab.mit.edu" target="_blank">MIT-IBM Watson AI Lab </a> in Cambridge, MA, USA. 
-			I received my Ph.D. degree from the Department of Computer Science at <a href="https://www.hku.hk" target="_blank"> The University of Hong Kong</a>, where I was advised by <a href="http://i.cs.hku.hk/~kykwong/" target="_blank">Prof. Kenneth K.Y. Wong</a>.
-			Prior to that, I got my B.Sc. from <a href="http://www.sysu.edu.cn/en/index.htm" target="_blank">Sun Yat-sen University</a> in 2016.</p>
-			<p>
-			My interests are centered around machine learning and its applications to vision and language. My ultimate research goal is to develop an autonomous agent that can perceive and reason about the physical world, and communicate with humans in natural language.</p>
-    	</div>
-	
-    <div class="content-container">
-		<h2>News</h2>
-			<ul>
-				[January 2023]<a href="https://openreview.net/pdf?id=Lr8cOOtYbfL" target="_blank"> A paper </a> about competion-level code generation has been accepted by ICLR 2023. <br>
-				[January 2023]<a href="https://arxiv.org/abs/2109.00681" target="_blank"> A paper </a> about face video inpainting has been accepted by TIP 2023. <br>
-        		[September 2022] Serve as a Senior Program Committee (SPC) Member for AAAI 2023. <br>
-				[September 2022] A paper (<a href="https://ywq.github.io/s3nerf/" target="_blank">S<sup>3</sup>-NeRF</a>) about photometric stereo has been accepted by NeurIPS 2022. <br>
-				[September 2022] A paper about <a href="https://openreview.net/forum?id=yPJ9A0GWLg0" target="_blank">Embodied Concept Learning</a> has been accepted by CoRL 2022. <br>
-				[July 2022]&nbsp; We are organizing a workshop about <a href="https://mvcs-workshop.github.io" target="_blank">Machine Visual Common Sense</a> on ECCV 2022.<br>
-				[July 2022]&nbsp; A paper about Multi-View Photometric Stereo was accepted by ECCV 2022. A paper for Mask-Free Face Recognition was accepted by ICIP 2022.<br>
-				[January 2022]&nbsp; A paper (<a href="https://comphyreasoning.github.io" target="_blank">ComPhy</a>) about physical reasoning has been accepted by ICLR 2022. <br>
- 				<!--
-				[October 2021]&nbsp; Two papers (<a href="http://vrdp.csail.mit.edu/" target="_blank">VRDP</a> and <a href="http://star.csail.mit.edu/" target="_blank">STAR</a>) about visual reasoning have been accepted by NeurIPS 2021. <br>
-			    [March 2021]&nbsp; One paper about video action detection have been accepted by CVPR 2021. <br>
-				[January 2021]&nbsp; One paper about learning physical dynamics has been accepted in ICLR 2021! Possibly last first-authored paper as a Ph.D. student.<br>
-				-->
-			</ul>
-	</div>
-  
-<div class="slider">
-<h3>Recent Research highlights</h3>
-<div class="recent-work">
-<div class="grid-container" style="margin-top:auto;">
+<table cellspacing="0" cellpadding="0" style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+    <tr style="padding:0px">
+      <td style="padding:0px">
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr style="padding:0px">
+              <td style="padding:2.5%;width:63%;vertical-align:middle">
+                <p style="text-align:center">
+                    <name>Zhenfang Chen &nbsp 陈振方</name>
+                </p>
 
-  <div>
-  <div>
-  <a href="https://vis-www.cs.umass.edu/genome/">
-    <img src="images/genome.jpg" height="175" alt="" /></a>
-    <p>ICLR 2024: GENOME</p>
-  </div>
+                I am a researcher at <a href="https://mitibmwatsonailab.mit.edu" target="_blank">MIT-IBM Watson AI Lab </a> in Cambridge, MA, USA. 
+                I received my Ph.D. degree from the Department of Computer Science at <a href="https://www.hku.hk" target="_blank"> The University of Hong Kong</a>, where I was advised by <a href="http://i.cs.hku.hk/~kykwong/" target="_blank">Prof. Kenneth K.Y. Wong</a>.
+                Prior to that, I got my B.Sc. from <a href="http://www.sysu.edu.cn/en/index.htm" target="_blank">Sun Yat-sen University</a> in 2016.
+                <br><br>
 
-  <div>
-  <a href="https://vis-www.cs.umass.edu/CoVLM/">
-    <img src="images/covlm.gif" height="175" alt="" /></a>
-    <p>ICLR 2024: CoVLM</p>
-  </div>
-  </div>
+                My interests are centered around machine learning and its applications to vision and language. My ultimate research goal is to develop an autonomous agent that can perceive and reason about the physical world, and communicate with humans in natural language. 
+                <br><br>
 
- <div>
- <div>
-  <a href="https://arxiv.org/abs/2301.05226">
-    <img src="images/ipvr.png" height="175" alt="" /></a>
-    <p>AAAI 2024: Visual Chain-of-Thought</p>
-  </div>
+                <p style="text-align:center">
+                    <a href="mailto:chenzhenfang2013@gmail.com">Email</a> &nbsp/&nbsp
+                    <a href="https://github.com/zfchenUnique">Github</a> &nbsp/&nbsp
+                    <a href="https://www.linkedin.com/in/%E6%8C%AF%E6%96%B9-%E9%99%88-512011bb/">LinkedIn</a> &nbsp/&nbsp
+                    <a href="https://dblp.org/pers/c/Chen:Zhenfang.html">DBLP</a> &nbsp/&nbsp
+                    <a href="https://scholar.google.com/citations?user=QSRdIzAAAAAJ&hl=zh-CN">Google Scholar</a>
+                </p>
+              </td>
 
-  <div>
-  <a href="https://comphyreasoning.github.io">
-    <img src="images/comPhy.gif" height="175" alt="" /></a>
-    <p>ICLR 2022: ComPhy</p>
-  </div>
-  </div>
+              <td style="padding:2.5%;width:40%;max-width:40%;vertical-align:middle">
+                <a href="images/vegas_2022.JPG">
+                    <img style="width:50%;max-width:80%" alt="profile photo" src="images/vegas_2022.JPG">
+                </a>
+              </td>
+            </tr>
 
-  <div>
-  <div>
-  <a href="https://codeaimcts.github.io">
-    <img src="images/codemcts.png" height="175" alt="" /></a>
-    <p>ICLR 2023: PG-TD</p>
-  </div>
+          </tbody></table>
 
-  <div>
-  <a href="https://github.com/zfchenUnique/DCL-Release">
-    <img src="images/dcl.gif" height="175" alt="" /></a>
-    <p>ICLR 2021: Dynamic Concept Learner</p>
-  </div>
-  </div>
-<!--
-  <div>
-  <a href="http://vrdp.csail.mit.edu">
-    <img src="images/vrdp.gif" height="130" alt="" /></a>
-    <p>NeurIPS21: VRDP</p>
-  </div>
--->
-  <!--
-  <div>
-  <a href="http://www.visionlab.cs.hku.hk/publications/chen_acl2019.pdf">
-    <img src="images/acl2019.png" height="150" alt="" /></a>
-    <p>ACL19: WSSTG</p>
-  </div>
- -->
-  <div>
-  <div>
-  <a href="https://dingmyu.github.io/ecl/">
-    <img src="images/corl2022.png" height="175" alt="" /></a>
-    <p>CoRL22: Embodied Concept Learner</p>
-  </div>
-  
-  <div>
-  <a href="https://ywq.github.io/s3nerf">
-    <img src="images/s3nerf_neurips2022.gif" height="175" alt="" /></a>
-    <p>NeurIPS22: S<sup>3</sup>-NeRF</p>
-  </div>
-  </div>
+          <table width="92%" align="left" border="0" cellspacing="0" style="padding-left:20px;padding-bottom:5px"><tbody>
+              <tr> <td>
+                  <heading>News</heading><br>
+                </td> </tr>
+            </tbody>
+          </table>
 
-</div>
-</div>
-</div>
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+              <div class="news">
+              <ul class="news" style="margin-top: 5px; padding-top: 0;">
+              [January 2023]<a href="https://openreview.net/pdf?id=Lr8cOOtYbfL" target="_blank"> A paper </a> about competion-level code generation has been accepted by ICLR 2023. <br>
+              [January 2023]<a href="https://arxiv.org/abs/2109.00681" target="_blank"> A paper </a> about face video inpainting has been accepted by TIP 2023. <br>
+                  [September 2022] Serve as a Senior Program Committee (SPC) Member for AAAI 2023. <br>
+              [September 2022] A paper (<a href="https://ywq.github.io/s3nerf/" target="_blank">S<sup>3</sup>-NeRF</a>) about photometric stereo has been accepted by NeurIPS 2022. <br>
+              [September 2022] A paper about <a href="https://openreview.net/forum?id=yPJ9A0GWLg0" target="_blank">Embodied Concept Learning</a> has been accepted by CoRL 2022. <br>
+              [July 2022]&nbsp; We are organizing a workshop about <a href="https://mvcs-workshop.github.io" target="_blank">Machine Visual Common Sense</a> on ECCV 2022.<br>
+              [July 2022]&nbsp; A paper about Multi-View Photometric Stereo was accepted by ECCV 2022. A paper for Mask-Free Face Recognition was accepted by ICIP 2022.<br>
+              [January 2022]&nbsp; A paper (<a href="https://comphyreasoning.github.io" target="_blank">ComPhy</a>) about physical reasoning has been accepted by ICLR 2022. <br>
+              <!--
+              [October 2021]&nbsp; Two papers (<a href="http://vrdp.csail.mit.edu/" target="_blank">VRDP</a> and <a href="http://star.csail.mit.edu/" target="_blank">STAR</a>) about visual reasoning have been accepted by NeurIPS 2021. <br>
+                [March 2021]&nbsp; One paper about video action detection have been accepted by CVPR 2021. <br>
+              [January 2021]&nbsp; One paper about learning physical dynamics has been accepted in ICLR 2021! Possibly last first-authored paper as a Ph.D. student.<br>
+              -->
+              </ul>
+              </div>
+          </table>
 
-<div class="content-container">
-      <h2>Preprints</h2>
-      (* denotes equal contribution.)
-        <div class="hflex-container" id="paper">
-            <div>
-              <p class="title">ContPhy: Continuum Physical Concept Learning and Reasoning from Videos</p>
-              <p class="authors">Zhicheng Zheng*, Xin Yan*, <b>Zhenfang Chen*</b>, Jingzhou Wang, Qin Zhi Eddie Lim, Joshua B. Tenenbaum, Chuang Gan</p>
-              <p class="venue">Arxiv</p>
-              <a class="pdflink" href="https://arxiv.org/pdf/2402.06119.pdf" target="_blank">Paper</a>
-                <a class="prjlink" href="https://physical-reasoning-project.github.io/" target="_blank">Project</a>
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-left:20px;padding-bottom:5px;padding-top:20px"><tbody>
+              <tr> <td>
+                  <heading>Previous Experience</heading>
+                </td> </tr>
+            </tbody>
+          </table>
+
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+              <tr>
+                <td style=width:30%;padding-left:30px> The University of Adelaide, 2019 </td>
+                <td style=width:70%;padding-left:00px>  Visiting student, working with <a href="http://www.qi-wu.me/home.html" target="_blank">Dr. Qi Wu</a> and <a href="https://wp8619.github.io/" target="_blank">Dr. Peng Wang </td>
+              </tr>
+              <tr>
+                <td style=width:22%;padding-left:30px> Tencent AI lab, 2018 </td>
+                <td style=width:78%;padding-left:00px> Research intern, working with <a href="http://forestlinma.com/" target="_blank">Dr. Lin Ma</a> and <a href="https://sites.google.com/site/whluoimperial/" target="_blank">Dr. Wenhan Luo</a></td>
+              </tr>
+              <tr>
+                <td style=width:22%;padding-left:30px> Sensetime, 2015 </td>
+                <td style=width:78%;padding-left:00px> Research intern, working with <a href="http://jeffreykuang.github.io/" target="_blank">Dr. Zhanghui Kuang</a> and <a href="http://www.statfe.com/" target="_blank">Dr. Wayne Zhang</a>. </td>
+              </tr>
+              <tr>
+                <td style=width:22%;padding-left:30px> Microsoft Research Asia, 2015</td>
+                <td style=width:78%;padding-left:00px> Research intern, working with <a href="https://www.microsoft.com/en-us/research/people/lsun/" target="_blank">Dr. lei Sun</a>  </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:20px;padding-left:20px;padding-bottom:5px"><tbody>
+              <tr> <td>
+                      <heading>Recent Research Highlight</heading>
+                </td> </tr>
+            </tbody>
+          </table>
+
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:05px;padding-left:20px;padding-bottom:0px"><tbody>
+              <tr> <td>
+              <div class="grid-container">
+                  <div>
+                     <a href="https://vis-www.cs.umass.edu/genome/">
+                         <img src="images/genome.jpg" height="70" alt="" />
+                        
+                     </a>
+                    <p>ICLR 2024: GENOME</p>
+                  </div>
+
+                  <div>
+                   <a href="https://vis-www.cs.umass.edu/CoVLM/">
+                      <img src="images/covlm.gif" height="70" alt="" />
+                   </a>
+                    <p>ICLR 2024: CoVLM</p>
+                  </div>
+
+                  <div>
+                     <a href="https://arxiv.org/abs/2301.05226">
+                        <img src="images/ipvr.png" height="70" alt="" />
+                        <img src="data/nerfs3.gif" height="70" alt="" />
+                     </a>
+                    <p>AAAI 2024: Visual CoT</p>
+                  </div>
+
+                  <div>
+                     <a href="https://comphyreasoning.github.io">
+                        <img src="images/comPhy.gif" height="70" alt="" />
+                     </a>
+                    <p>ICLR 2022: ComPhy</p>
+                  </div>
+
+
+                  <div>
+                   <a href="https://codeaimcts.github.io">
+                      <img src="images/codemcts.png" height="70" alt="" />
+                   </a>
+                    <p>ICLR 2023: PG-TD</p>
+                  </div>
+
+                  <div>
+                  <a href="https://github.com/zfchenUnique/DCL-Release">
+                    <img src="images/dcl.gif" height="70" alt="" />
+                  </a>
+                    <p>ICLR 2021: DCL</p>
+                  </div>
+
+                  <div>
+                  <a href="https://dingmyu.github.io/ecl/">
+                    <img src="images/corl2022.png" height="70" alt="" />
+                  </a>
+                    <p>CoRL22: ECL</p>
+                  </div>
+
+                  <div>
+                  <a href="https://ywq.github.io/s3nerf">
+                    <img src="images/s3nerf_neurips2022.gif" height="70" alt="" /></a>
+                    <p>NeurIPS22: S<sup>3</sup>-NeRF</p>
+                  </div>
+
+                </div>
+                </td> </tr>
+            </tbody>
+          </table>
+          
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:20px;padding-left:20px;padding-bottom:5px"><tbody>
+              <tr> <td>
+                  <heading>Preprints</heading> (&nbsp * denotes equal contribution.)
+                </td> </tr>
+            </tbody>
+          </table>
+
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:00px;margin-left:auto;padding-bottom:5px"><tbody>
+            <div class="hflex-container" id="paper">
+                <div>
+                  <p class="title">ContPhy: Continuum Physical Concept Learning and Reasoning from Videos</p>
+                  <p class="authors">Zhicheng Zheng*, Xin Yan*, <b>Zhenfang Chen*</b>, Jingzhou Wang, Qin Zhi Eddie Lim, Joshua B. Tenenbaum, Chuang Gan</p>
+                  <p class="venue">Arxiv</p>
+                  <a class="pdflink" href="https://arxiv.org/pdf/2402.06119.pdf" target="_blank">Paper</a>
+                    <a class="prjlink" href="https://physical-reasoning-project.github.io/" target="_blank">Project</a>
+                </div>
             </div>
-        </div>
 
-        <div class="hflex-container" id="paper">
-            <div>
-              <p class="title">Improving Reinforcement Learning from Human Feedback with Efficient Reward Model Ensemble</p>
-              <p class="authors">Shun Zhang, <b>Zhenfang Chen</b>, Sunli Chen, Yikang Shen, Zhiqing Sun, and Chuang Gan</p>
-              <p class="venue">Arxiv</p>
-              <a class="pdflink" href="https://arxiv.org/pdf/2401.16635.pdf" target="_blank">Paper</a>
-                <a class="prjlink" href="" target="_blank">Project</a>
+            <div class="hflex-container" id="paper">
+                <div>
+                  <p class="title">Improving Reinforcement Learning from Human Feedback with Efficient Reward Model Ensemble</p>
+                  <p class="authors">Shun Zhang, <b>Zhenfang Chen</b>, Sunli Chen, Yikang Shen, Zhiqing Sun, and Chuang Gan</p>
+                  <p class="venue">Arxiv</p>
+                  <a class="pdflink" href="https://arxiv.org/pdf/2401.16635.pdf" target="_blank">Paper</a>
+                    <a class="prjlink" href="" target="_blank">Project</a>
+                </div>
             </div>
-        </div>
+          </tbody>
+          </table>
 
-		<h2>Publications </h2>
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:20px;padding-left:20px;padding-bottom:5px"><tbody>
+              <tr> <td>
+                  <heading>Publications</heading>
+                </td> </tr>
+            </tbody>
+          </table>
 
-        <div class="hflex-container" id="paper">
+          <div class="hflex-container" id="paper">
             <div>
               <p class="title">GENOME: Generative Neuro-Symbolic Visual Reasoning by Growing and Reusing Modules</p>
               <p class="authors"><b>Zhenfang Chen</b>*, Rui Sun*, Wenjun Liu*, Yining Hong, Chuang Gan</p>
@@ -504,15 +353,15 @@
         </div>
 
         <div class="hflex-container" id="paper">
-         	<!--
+          <!--
           <img src="images/codemcts.png">
           -->
             <div>
               <p class="title">Planning with Large Language Models for Code Generation</p>
-         		  <p class="authors">Shun Zhang, <b>Zhenfang Chen</b>, Yikang Shen, Mingyu Ding, Joshua B. Tenenbaum, and Chuang Gan</p>
+              <p class="authors">Shun Zhang, <b>Zhenfang Chen</b>, Yikang Shen, Mingyu Ding, Joshua B. Tenenbaum, and Chuang Gan</p>
               <p class="venue">ICLR2023</p>
               <a class="pdflink" href="https://openreview.net/pdf?id=Lr8cOOtYbfL" target="_blank">Paper</a>
-              	<a class="prjlink" href="https://codeaimcts.github.io" target="_blank">Project</a>
+                <a class="prjlink" href="https://codeaimcts.github.io" target="_blank">Project</a>
             </div>
         </div>
 
@@ -530,13 +379,13 @@
             </div>
         </div>
 
-		    <div class="hflex-container" id="paper">
-         	<!--
+        <div class="hflex-container" id="paper">
+          <!--
           <img src="images/s3nerf_neurips2022.gif">
           -->
             <div>
               <p class="title">S<sup>3</sup>-NeRF: Neural Reflectance Field from Shading and Shadow under a Single Viewpoint</p>
-         		  <p class="authors">Wenqi Yang, Guanying Chen, Chaofeng Chen, <b>Zhenfang Chen</b>, Kwan-Yee K. Wong</p>
+              <p class="authors">Wenqi Yang, Guanying Chen, Chaofeng Chen, <b>Zhenfang Chen</b>, Kwan-Yee K. Wong</p>
               <p class="venue">NeurIPS2022</p>
               <a class="pdflink" href="https://i.cs.hku.hk/~kykwong/publications/wyang_neurips2022.pdf" target="_blank">Paper</a>
               <a class="prjlink" href="https://ywq.github.io/s3nerf/" target="_blank">Project</a>
@@ -545,26 +394,26 @@
         </div>
 
         <div class="hflex-container" id="paper">
-         	  <!--
+            <!--
             <img src="images/corl2022.png">
             -->
             <div>
               <p class="title">Embodied Concept Learner: Self-supervised Learning of Concepts and Mapping through Instruction Following</p>
-         		  <p class="authors">Mingyu Ding, Yan Xu, <b>Zhenfang Chen</b>, David Daniel Cox, Ping Luo, Joshua B. Tenenbaum, Chuang Gan</p>
+              <p class="authors">Mingyu Ding, Yan Xu, <b>Zhenfang Chen</b>, David Daniel Cox, Ping Luo, Joshua B. Tenenbaum, Chuang Gan</p>
               <p class="venue">CoRL2022</p>
               <a class="pdflink" href="https://openreview.net/forum?id=yPJ9A0GWLg0" target="_blank">Paper</a>
-              	<a class="prjlink" href="http://ecl.csail.mit.edu/" target="_blank">Project</a>
+                <a class="prjlink" href="http://ecl.csail.mit.edu/" target="_blank">Project</a>
                 <a class="codelink" href="https://github.com/dingmyu/ECL.git" target="_blank">Code</a>
             </div>
         </div>
 
         <div class="hflex-container" id="paper">
-         	<!--
+          <!--
           <img src="images/eccv22_mvps2.gif">
           -->
             <div>
               <p class="title">PS-NeRF: Neural Inverse Rendering for Multi-view Photometric Stereo</p>
-         		  <p class="authors">Wenqi Yang, Guanying Chen, Chaofeng Chen, <b>Zhenfang Chen</b>, Kwan-Yee K. Wong</p>
+              <p class="authors">Wenqi Yang, Guanying Chen, Chaofeng Chen, <b>Zhenfang Chen</b>, Kwan-Yee K. Wong</p>
               <p class="venue">ECCV2022</p>
               <a class="pdflink" href="https://arxiv.org/pdf/2207.11406.pdf" target="_blank">Paper</a>
               <a class="prjlink" href="https://ywq.github.io/psnerf/" target="_blank">Project</a>
@@ -573,241 +422,344 @@
         </div> 
 
         <div class="hflex-container" id="paper">
-         	<!--
+          <!--
           <img src="images/ICIP2022_ffrnet.jpeg">
           -->
             <div>
               <p class="title">A Unified Framework for Masked and Mask-Free Face Recognition via Feature Rectification</p>
-         		  <p class="authors">Shaozhe Hao, Chaofeng Chen, <b>Zhenfang Chen</b>, Kwan-Yee K. Wong</p>
+              <p class="authors">Shaozhe Hao, Chaofeng Chen, <b>Zhenfang Chen</b>, Kwan-Yee K. Wong</p>
                <p class="venue">ICIP2022</p>
                <a class="pdflink" href="https://arxiv.org/abs/2202.07358" target="_blank">Paper</a>
                <a class="codelink" href="https://github.com/haoosz/FFR-Net" target="_blank">Github</a>
-        	</div> 
+          </div> 
         </div> 
 
-		<div class="hflex-container" id="paper">
-      		<!--
+    <div class="hflex-container" id="paper">
+          <!--
           <img src="images/comPhy.gif">
           -->
-          	<div>
-            	<p class="title">ComPhy: Compositional Physical Reasoning of Objects and Events from Videos</p>
-      		  	<p class="authors"><b>Zhenfang Chen</b>, Kexin Yi, Yunzhu Li, Mingyu Ding, Antonio Torralba, Joshua B. Tenenbaum, Chuang Gan</p>
-            	<p class="venue">ICLR2022</p>
-            	<a class="pdflink" href="https://openreview.net/forum?id=PgNEYaIc81Q" target="_blank">Paper</a>
-            	<a class="prjlink" href="https://comphyreasoning.github.io" target="_blank">Project</a>
-            	<a class="codelink" href="https://github.com/comphyreasoning/compositional_physics_learner" target="_blank">Code</a>
-          	</div>
-    	</div>
+            <div>
+              <p class="title">ComPhy: Compositional Physical Reasoning of Objects and Events from Videos</p>
+              <p class="authors"><b>Zhenfang Chen</b>, Kexin Yi, Yunzhu Li, Mingyu Ding, Antonio Torralba, Joshua B. Tenenbaum, Chuang Gan</p>
+              <p class="venue">ICLR2022</p>
+              <a class="pdflink" href="https://openreview.net/forum?id=PgNEYaIc81Q" target="_blank">Paper</a>
+              <a class="prjlink" href="https://comphyreasoning.github.io" target="_blank">Project</a>
+              <a class="codelink" href="https://github.com/comphyreasoning/compositional_physics_learner" target="_blank">Code</a>
+            </div>
+      </div>
 
-		<div class="hflex-container" id="paper">
-      		<!--
+    <div class="hflex-container" id="paper">
+          <!--
           <img src="images/vrdp.gif">
           -->
-          	<div>
-            	<p class="title">Dynamic Visual Reasoning by Learning Differentiable Physics Models from Video and Language</p>
-      		  	<p class="authors">Mingyu Ding, <b>Zhenfang Chen</b>, Tao Du, Ping Luo, Joshua B. Tenenbaum, Chuang Gan</p>
-            	<p class="venue">NeurIPS2021</p>
-            	<a class="pdflink" href="https://arxiv.org/abs/2110.15358" target="_blank">Paper</a>
-            	<a class="prjlink" href="http://vrdp.csail.mit.edu" target="_blank">Project</a>
-            	<a class="codelink" href="https://github.com/dingmyu/VRDP.git" target="_blank">Code</a>
-          	</div>
-    	</div>
+            <div>
+              <p class="title">Dynamic Visual Reasoning by Learning Differentiable Physics Models from Video and Language</p>
+              <p class="authors">Mingyu Ding, <b>Zhenfang Chen</b>, Tao Du, Ping Luo, Joshua B. Tenenbaum, Chuang Gan</p>
+              <p class="venue">NeurIPS2021</p>
+              <a class="pdflink" href="https://arxiv.org/abs/2110.15358" target="_blank">Paper</a>
+              <a class="prjlink" href="http://vrdp.csail.mit.edu" target="_blank">Project</a>
+              <a class="codelink" href="https://github.com/dingmyu/VRDP.git" target="_blank">Code</a>
+            </div>
+      </div>
 
 
-		<div class="hflex-container" id="paper">
-      		<!--
+    <div class="hflex-container" id="paper">
+          <!--
           <img src="images/NeurIPS2021_star_teaser.png">
           -->
-          	<div>
-            	<p class="title">STAR: A Benchmark for Situated Reasoning in Real-World Videos</p>
-      		  	<p class="authors">Bo Wu, Shoubin Yu,  <b>Zhenfang Chen </b>, Joshua B. Tenenbaum, Chuang Gan</p>
-            	<p class="venue">NeurIPS2021 (Datasets and Benchmarks Track)</p>
-            	<a class="pdflink" href="https://openreview.net/pdf?id=EfgNF5-ZAjM" target="_blank">Paper</a>
-            	<a class="prjlink" href="http://star.csail.mit.edu/" target="_blank">Project</a>
+            <div>
+              <p class="title">STAR: A Benchmark for Situated Reasoning in Real-World Videos</p>
+              <p class="authors">Bo Wu, Shoubin Yu,  <b>Zhenfang Chen </b>, Joshua B. Tenenbaum, Chuang Gan</p>
+              <p class="venue">NeurIPS2021 (Datasets and Benchmarks Track)</p>
+              <a class="pdflink" href="https://openreview.net/pdf?id=EfgNF5-ZAjM" target="_blank">Paper</a>
+              <a class="prjlink" href="http://star.csail.mit.edu/" target="_blank">Project</a>
           </div>
-    	</div>
+      </div>
 
 
-		<div class="hflex-container" id="paper">
-      		<!--
+    <div class="hflex-container" id="paper">
+          <!--
           <img src="images/causal-graph4.png">
           -->
-          	<div>
-            	<p class="title">The Blessings of Unlabeled Background in Untrimmed Videos</p>
-      		  	<p class="authors">Yuan Liu, Jingyuan Chen, <b>Zhenfang Chen</b>, Bing Deng, Jianqiang Huang, Hanwang Zhang</p>
-            	<p class="venue">CVPR2021</p>
-            	<a class="pdflink" href="https://arxiv.org/abs/2103.13183" target="_blank">Paper</a>
-            	<a class="codelink" href="https://github.com/liuyuancv/WTAL_blessing.git" target="_blank"> Code</a>
+            <div>
+              <p class="title">The Blessings of Unlabeled Background in Untrimmed Videos</p>
+              <p class="authors">Yuan Liu, Jingyuan Chen, <b>Zhenfang Chen</b>, Bing Deng, Jianqiang Huang, Hanwang Zhang</p>
+              <p class="venue">CVPR2021</p>
+              <a class="pdflink" href="https://arxiv.org/abs/2103.13183" target="_blank">Paper</a>
+              <a class="codelink" href="https://github.com/liuyuancv/WTAL_blessing.git" target="_blank"> Code</a>
           </div>
-    	</div>
+      </div>
 
-		<div class="hflex-container" id="paper">
-      		<!--
+    <div class="hflex-container" id="paper">
+          <!--
           <img src="images/dcl.gif">
           -->
-          	<div>
-            	<p class="title">Grounding Physical Concepts of Objects and Events Through Dynamic Visual Reasoning</p>
-      		  	<p class="authors"><b>Zhenfang Chen</b>, Jiayuan Mao, Jiajun Wu, Kwan-Yee K. Wong, Joshua B. Tenenbaum, Chuang Gan</p>
-            	<p class="venue">ICLR2021</p>
-            	<a class="pdflink" href="https://arxiv.org/abs/2103.16564" target="_blank">Paper</a>
-            	<a class="prjlink" href="http://dcl.csail.mit.edu" target="_blank">Project</a>
-            	<a class="codelink" href="https://github.com/zfchenUnique/DCL-Release" target="_blank"> Code</a>
+            <div>
+              <p class="title">Grounding Physical Concepts of Objects and Events Through Dynamic Visual Reasoning</p>
+              <p class="authors"><b>Zhenfang Chen</b>, Jiayuan Mao, Jiajun Wu, Kwan-Yee K. Wong, Joshua B. Tenenbaum, Chuang Gan</p>
+              <p class="venue">ICLR2021</p>
+              <a class="pdflink" href="https://arxiv.org/abs/2103.16564" target="_blank">Paper</a>
+              <a class="prjlink" href="http://dcl.csail.mit.edu" target="_blank">Project</a>
+              <a class="codelink" href="https://github.com/zfchenUnique/DCL-Release" target="_blank"> Code</a>
           </div>
-    	</div>
+      </div>
 
 
-    	<div class="hflex-container" id="paper">
-      		<!--
+      <div class="hflex-container" id="paper">
+          <!--
           <img src="images/CVPR2020_v2.png" height="175">
           -->
           <div>
             <p class="title">Cops-Ref: A new Dataset and Task on Compositional Referring Expression Comprehension</p>
-      		<p class="authors"><b>Zhenfang Chen</b>, Peng Wang, Lin Ma, Kwan-Yee K. Wong, Qi Wu</p>
+          <p class="authors"><b>Zhenfang Chen</b>, Peng Wang, Lin Ma, Kwan-Yee K. Wong, Qi Wu</p>
             <p class="venue">CVPR2020</p>
             <a class="pdflink" href="https://arxiv.org/abs/2003.00403" target="_blank">Paper</a>
             <a class="codelink" href="https://github.com/zfchenUnique/Cops-Ref" target="_blank">Code & Data</a>
           </div>
-    	</div>
+      </div>
 
-    	<div class="hflex-container" id="paper">
-      		<!--
+      <div class="hflex-container" id="paper">
+          <!--
           <img src="images/wstg.png">
-        	-->
+          -->
           <div>
-     			<p class="title">Look Closer to Ground Better: Weakly-Supervised Temporal Grounding of Sentence in Video</p>
-      			<p class="authors"><b>Zhenfang Chen</b>, Lin Ma, Wenhan Luo, Peng Tang, Kwan-Yee K. Wong</p>
-      			<p class="venue">Arxiv.</p>
-      			<a class="pdflink"><a href="https://arxiv.org/abs/2001.09308" target="_blank">Paper</a>
-      		<!--<a class="codelink" href="" target="_blank">CODE&DATA</a>-->
-        	</div>
-    	</div>
+          <p class="title">Look Closer to Ground Better: Weakly-Supervised Temporal Grounding of Sentence in Video</p>
+            <p class="authors"><b>Zhenfang Chen</b>, Lin Ma, Wenhan Luo, Peng Tang, Kwan-Yee K. Wong</p>
+            <p class="venue">Arxiv.</p>
+            <a class="pdflink"><a href="https://arxiv.org/abs/2001.09308" target="_blank">Paper</a>
+          <!--<a class="codelink" href="" target="_blank">CODE&DATA</a>-->
+          </div>
+      </div>
     
-	    <div class="hflex-container" id="paper">
-	      	<!--
+      <div class="hflex-container" id="paper">
+          <!--
           <img src="images/acl2019.png">
-	        -->
+          -->
           <div>
-	     		<p class="title">Weakly-Supervised Spatio-Temporally Grounding Natural Sentence in Video</p>
-	      		<p class="authors"><b>Zhenfang Chen</b>, Lin Ma, Wenhan Luo, Kwan-Yee K. Wong</p>
-	      		<p class="venue">ACL2019 (<strong>Oral Presentation</strong>)</p>
-	      		<a class="pdflink"><a href="http://www.visionlab.cs.hku.hk/publications/chen_acl2019.pdf" target="_blank">Paper</a>
-	      		<a class="codelink" href="https://github.com/zfchenUnique/WSSTG" target="_blank">Code</a>
-	        </div>
-	    </div>
+          <p class="title">Weakly-Supervised Spatio-Temporally Grounding Natural Sentence in Video</p>
+            <p class="authors"><b>Zhenfang Chen</b>, Lin Ma, Wenhan Luo, Kwan-Yee K. Wong</p>
+            <p class="venue">ACL2019 (<strong>Oral Presentation</strong>)</p>
+            <a class="pdflink"><a href="http://www.visionlab.cs.hku.hk/publications/chen_acl2019.pdf" target="_blank">Paper</a>
+            <a class="codelink" href="https://github.com/zfchenUnique/WSSTG" target="_blank">Code</a>
+          </div>
+      </div>
     
-	    <div class="hflex-container" id="paper">
-	    	<!--
+      <div class="hflex-container" id="paper">
+        <!--
         <img src="images/mm19.png">
-	      -->
+        -->
           <div>
-		         <p class="title">Learning Local Similarity with Spatial Relations for Object Retrieval</p>
-		         <p class="authors"><b>Zhenfang Chen</b>, Zhanghui Kuang, Wayne Zhang, Kwan-Yee K. Wong</p>
-		         <p class="venue">MM2019</p>
-		         <a class="pdflink"><a href="http://www.visionlab.cs.hku.hk/publications/chen_mm19.pdf">Paper</a>
-	        </div>
-		  </div>
+             <p class="title">Learning Local Similarity with Spatial Relations for Object Retrieval</p>
+             <p class="authors"><b>Zhenfang Chen</b>, Zhanghui Kuang, Wayne Zhang, Kwan-Yee K. Wong</p>
+             <p class="venue">MM2019</p>
+             <a class="pdflink"><a href="http://www.visionlab.cs.hku.hk/publications/chen_mm19.pdf">Paper</a>
+          </div>
+      </div>
     
-	    <div class="hflex-container" id="paper">
-				      <!--
+      <div class="hflex-container" id="paper">
+              <!--
               <img src="images/BMVC_v2.png">
-	          	-->
-              	<div>
-				         <p class="title">Boosting up scene text detectors with guided CNN.</p>
-				         <p class="authors">Xiaoyu Yue, Zhanghui Kuang, Zhaoyang Zhang, <b>Zhenfang Chen</b>, Pan He, Yu Qiao and Wayne Zhang</p>
-				         <p class="venue">BMVC2018 (<strong>Oral Presentation</strong>)</p>
-				         <a class="pdflink" href="https://arxiv.org/abs/1805.04132">Paper</a>
-			         </div>
-	    </div>
-	    <div class="hflex-container" id="paper">
-				      <!--
+              -->
+                <div>
+                 <p class="title">Boosting up scene text detectors with guided CNN.</p>
+                 <p class="authors">Xiaoyu Yue, Zhanghui Kuang, Zhaoyang Zhang, <b>Zhenfang Chen</b>, Pan He, Yu Qiao and Wayne Zhang</p>
+                 <p class="venue">BMVC2018 (<strong>Oral Presentation</strong>)</p>
+                 <a class="pdflink" href="https://arxiv.org/abs/1805.04132">Paper</a>
+               </div>
+      </div>
+      <div class="hflex-container" id="paper">
+              <!--
               <img src="images/cmac.png">
-	          	-->
-              	  <div>
-				         <p class="title">Aggregated deep feature from activation clusters for particular object retrieval.</p>
-				         <p class="authors"><b>Zhenfang Chen</b>, Zhanghui Kuang, Kwan-Yee K. Wong, Wayne Zhang</p>
-				         <p class="venue">MM17 (Thematic Workshop)</p>
-				         <a class="pdflink" href="https://i.cs.hku.hk/~kykwong/publications/zchen_mmtw2017.pdf">Paper</a>
-			         </div>
-	    </div>
+              -->
+                  <div>
+                 <p class="title">Aggregated deep feature from activation clusters for particular object retrieval.</p>
+                 <p class="authors"><b>Zhenfang Chen</b>, Zhanghui Kuang, Kwan-Yee K. Wong, Wayne Zhang</p>
+                 <p class="venue">MM17 (Thematic Workshop)</p>
+                 <a class="pdflink" href="https://i.cs.hku.hk/~kykwong/publications/zchen_mmtw2017.pdf">Paper</a>
+               </div>
+      </div>
 
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:20px;padding-left:20px;padding-bottom:5px"><tbody>
+                  <tr> <td>
+                      <heading>PhD Dissertation</heading>
+                    </td> </tr>
+                </tbody>
+          </table>
 
-	
-	<div class="content-container">
-		<h2>PhD Dissertation</h2>
-	    <div class="hflex-container" id="paper">
-				      <img src="images/Logo_HKU.jpeg">
-	          		  <div>
-				         <p class="title">Deep learning for visual retrieval, visual grounding and visual reasoning</p>
-				         <p class="authors"><b>Zhenfang Chen</b></p>
-				         <p class="venue">Dept. of Computer Science, The University of Hong Kong, 2021</p>
-						 <br>       
-						 <a class="pdflink" href="https://hub.hku.hk/handle/10722/302569">HKU Thesis Online </a>
-			         </div>
-	    </div>
-	</div>
+          <div class="hflex-container" id="paper">
+                  <img src="images/Logo_HKU.jpeg">
+                      <div>
+                     <p class="title">Deep learning for visual retrieval, visual grounding and visual reasoning</p>
+                     <p class="authors"><b>Zhenfang Chen</b></p>
+                     <p class="venue">Dept. of Computer Science, The University of Hong Kong, 2021</p>
+                 <br>       
+                 <a class="pdflink" href="https://hub.hku.hk/handle/10722/302569">HKU Thesis Online </a>
+                   </div>
+          </div>
 
-	<div class="content-container" display="flex">
-		<h2>Previous Experience</h2>
-	  		<ul>
-	  			<li>[The University of Adelaide, 2019]: Visiting student, working with <a href="http://www.qi-wu.me/home.html" target="_blank">Dr. Qi Wu</a> and <a href="https://wp8619.github.io/" target="_blank">Dr. Peng Wang</a> </li>
-    			<li>[Tencent AI lab, 2018]: Research intern, working with <a href="http://forestlinma.com/" target="_blank">Dr. Lin Ma</a> and <a href="https://sites.google.com/site/whluoimperial/" target="_blank">Dr. Wenhan Luo</a> </li>
-				<li>[Sensetime, 2015]: Research intern, working with <a href="http://jeffreykuang.github.io/" target="_blank">Dr. Zhanghui Kuang</a> and <a href="http://www.statfe.com/" target="_blank">Dr. Wayne Zhang</a> </li>
-				<li>[Microsoft Research Asia, 2015]: Research intern, working with <a href="https://www.microsoft.com/en-us/research/people/lsun/" target="_blank">Dr. lei Sun</a>  </li>
-			</ul>
-	</div>
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:20px;padding-left:20px;padding-bottom:5px"><tbody>
+              <tr> <td>
+                  <heading>Professional Services</heading>
+                </td> </tr>
+            </tbody>
+          </table>
 
-	<div class="content-container">
-	    <h2>Professional Services </h2>
-	    	<ul>
-              <li><b>Workshop Organizers</b>: <br>
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:00px;padding-left:20px;padding-bottom:5px"><tbody>
+            <ul style="margin-top:5px; padding-top: 0;">
+             <li><b>Workshop Organizers</b>: <br>
               <a href="https://mvcs-workshop.github.io/CVPR" target="_blank">Machine Visual Common Sense</a>, CVPR 2023.<br>
               <a href="https://mvcs-workshop.github.io" target="_blank">Machine Visual Common Sense</a>, ECCV 2022.<br>
-            	<li><b>Senior Program Committee (SPC) Member</b>: <br>
-            		&nbsp; AAAI 2024 </li>
+              <li><b>Senior Program Committee (SPC) Member</b>: <br>
+                &nbsp; AAAI 2024 </li>
                 &nbsp; AAAI 2023 </li>
-            	<li><b>Conference Reviewer</b>: <br>
-            		<!--&nbsp; IJCAI 2020, AAAI 2021, CVPR 2021, ICME 2021, ACL 2021, ICCV 2021, EMNLP 2021<br> </li> -->
-            		&nbsp; CVPR, ICCV, ACL, EMNLP, IJCAI, AAAI, NeurIPS, ICME, ICLR<br> </li>
-            	<li><b>Journal Reviewer</b>: <br>
-            		&nbsp; Transactions on Pattern Analysis and Machine Intelligence (TPAMI) <br>
-            		&nbsp; International Journal of Computer Vision (IJCV) <br>
-            		&nbsp; Transactions on Image Processing (TIP) <br>
-            	 	&nbsp; Transactions on Multimedia Computing Communications and Applications (TOMM) <br>
-            	 	&nbsp; Neurocomputing<br>
-            	 	&nbsp; Pattern Recognition (PR)<br>
-            	 	&nbsp; Transactions on Neural Networks and Learning Systems (TNNLS)<br>
-            	</li>
+              <li><b>Conference Reviewer</b>: <br>
+                <!--&nbsp; IJCAI 2020, AAAI 2021, CVPR 2021, ICME 2021, ACL 2021, ICCV 2021, EMNLP 2021<br> </li> -->
+                &nbsp; CVPR, ICCV, ACL, EMNLP, IJCAI, AAAI, NeurIPS, ICME, ICLR<br> </li>
+              <li><b>Journal Reviewer</b>: <br>
+                &nbsp; Transactions on Pattern Analysis and Machine Intelligence (TPAMI) <br>
+                &nbsp; International Journal of Computer Vision (IJCV) <br>
+                &nbsp; Transactions on Image Processing (TIP) <br>
+                &nbsp; Transactions on Multimedia Computing Communications and Applications (TOMM) <br>
+                &nbsp; Neurocomputing<br>
+                &nbsp; Pattern Recognition (PR)<br>
+                &nbsp; Transactions on Neural Networks and Learning Systems (TNNLS)<br>
+              </li>
             </ul>
-    </div>
+            </tbody>
+          </table>
 
-	<div class="content-container">
-	    <h2>Awards </h2>
-	    	<ul>
-            	<li> M. Braun Postgraduate Prizes, HKU 2019-2020 </li>
-            	<li>Postgraduate Scholarships (PGS), HKU 2016-2020</li>
-        	</ul>
-    </div>
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:00px;padding-left:20px;padding-bottom:5px"><tbody>
+              <tr> <td>
+                  <heading>Honors and Awards</heading>
+              </td> </tr>
+            </tbody>
+          </table>
 
-    <div class="content-container">
-		<h2>Teaching Assistant at HKU</h2>
-		<ul>
-			<li>[Spring, 2020]: COMP3270 Artificial Intelligence</li>
-			<li>[Spring, 2019]: COMP7404 Computational Intelligence and Machine Learning</li>
-			<li>[Spring, 2018]: COMP7404 Computational Intelligence and Machine Learning</li>
-			<li>[Summer, 2017]: COMP7502 Image Processing and Computer Vision&nbsp;</li>
-		</ul>
-	</div>
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:00px;padding-left:20px;padding-bottom:5px"><tbody>
+              <ul style="margin-top:5px; padding-top: 0;">
+                  <li> M. Braun Postgraduate Prizes, HKU 2019-2020 </li>
+                  <li>Postgraduate Scholarships (PGS), HKU 2016-2020</li>
+              </ul>
+            </tbody>
+          </table>
 
-	<div class="content-container">
-		<h2>Links</h2>
-			<table width="800">
-				<tr>
-					<td>
-						<script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=8ayCPMlUdEbB44mgNTgFNKEcVEXGb0mnXzA7tV8nAHg&cl=ffffff&w=250"></script>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div> 
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:00px;padding-left:20px;padding-bottom:5px"><tbody>
+              <tr> <td>
+                  <heading>Teaching Experience at HKU</heading>
+              </td> </tr>
+            </tbody>
+          </table>
+
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:00px;padding-left:20px;padding-bottom:5px"><tbody>
+              <ul style="margin-top:5px; padding-top: 0;">
+                  <li>[Spring, 2020]: COMP3270 Artificial Intelligence</li>
+                  <li>[Spring, 2019]: COMP7404 Computational Intelligence and Machine Learning</li>
+                  <li>[Spring, 2018]: COMP7404 Computational Intelligence and Machine Learning</li>
+                  <li>[Summer, 2017]: COMP7502 Image Processing and Computer Vision&nbsp;</li>
+              </ul>
+            </tbody>
+          </table>
+           
+          <table width="100%" align="center" border="0" cellspacing="0" style="padding-top:00px;padding-left:20px;padding-bottom:5px"><tbody>
+                    <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=8ayCPMlUdEbB44mgNTgFNKEcVEXGb0mnXzA7tV8nAHg&cl=ffffff&w=250"></script>
+          </table>
+
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+              <tr> <td style="padding:0px"> <br>
+                  <p style="text-align:right;font-size:small;"> Website adapted from <a href="https://jonbarron.info/">Jon Barron</a> </p>
+                </td> </tr>
+            </tbody>
+          </table>
+
+      </td>
+    </tr>
+</table>
+
+<!-- Define JavaScript function to generate publication entry -->
+<script>
+    // Define object to store author information
+    function generatePublicationEntry(imageSrcBefore, imageSrcAfter, title, authors, venue, links) {
+        // Function to preprocess author IDs
+        function preprocessAuthorId(authorId) {
+            // Remove trailing '*' or '#' symbols
+            return authorId.replace(/[#*]$/, '');
+        }
+        // Function to generate author links
+        function generateAuthorLinks(authors) {
+            return authors.map(authorId => {
+                const processedAuthorId = preprocessAuthorId(authorId);
+                const author = authorInfo[processedAuthorId];
+                if (author && author.homepage) {
+                    return `<a href="${author.homepage}">${authorId}</a>`;
+                } else {
+                    return authorId;
+                }
+            }).join(", ");
+        }
+
+        return `
+            <tr onmouseout="toggleOpacity('${title}', false)" onmouseover="toggleOpacity('${title}', true)">
+                <td style="padding:20px;width:13%;vertical-align:middle;padding-top:5px;padding-bottom:5px">
+                    <div class="one">
+                        <div class="two" id="${title}_image">
+                            <img src="${imageSrcAfter}" width="80" style="opacity: 0;">
+                        </div>
+                        <img src="${imageSrcBefore}" width="80">
+                    </div>
+                </td>
+                <td style="padding:0;width:85%;vertical-align:middle;padding-top:5px;padding-bottom:5px;">
+                    <strong>${title}</strong>
+                    <br>
+                    ${generateAuthorLinks(authors)}
+                    <br>
+                    ${venue}
+                    <br>
+                    ${links}
+                </td>
+            </tr>
+        `;
+    }
+
+    // Add a function to toggle opacity
+    function toggleOpacity(id, show) {
+        const element = document.getElementById(id + "_image").querySelector("img");
+        if (show) {
+            element.style.opacity = "1";
+        } else {
+            element.style.opacity = "0";
+        }
+    }
+
+    function populatePublications(category, publications) {
+        const publicationsContainer = document.getElementById(`${category}Publications`);
+
+        publications.forEach(publication => {
+            const publicationEntry = generatePublicationEntry(
+                publication.imageSrcBefore,
+                publication.imageSrcAfter,
+                publication.title,
+                publication.authors,
+                publication.venue,
+                publication.links,
+            );
+            publicationsContainer.innerHTML += publicationEntry;
+        });
+    }
+
+       // Call the function to populate publications for each category when the page loads
+    window.onload = function () {
+        // Publications for Conferences
+
+        const selectedPublications = [
+            // Publications data for conferences
+        ];
+
+        populatePublications('selected', selectedPublications);
+    };
+</script>
+
+
+
 </body>
+
 </html>
