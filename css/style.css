@@ -35,7 +35,7 @@ img {
 
 .content-container {
      box-sizing: border-box;
-     max-width: 900px;
+     max-width: 1000px;
      width: 100%;
      margin: 0 auto;
      margin-bottom: 20px;
@@ -97,10 +97,10 @@ img {
 
 #paper {
     border-bottom: solid 1px #EEE;
-    margin-bottom: 30px;
-    margin-top: 30px;
+    margin-bottom: 15px;
+    margin-top: 15px;
     /* max-height: 120px; */
-    min-height: 100px;
+    min-height: 30px;
     align-items: center;
 }
 
