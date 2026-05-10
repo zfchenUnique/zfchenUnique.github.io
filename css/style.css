@@ -95,7 +95,7 @@ img {
     FontAwesome reference: http://astronautweb.co/snippet/font-awesome/
 --------------------------------------*/
 
-#paper {
+.paper {
     border-bottom: solid 1px #EEE;
     margin-bottom: 15px;
     margin-top: 15px;
@@ -104,54 +104,54 @@ img {
     align-items: center;
 }
 
-#paper img {
+.paper img {
     width: 20%;
     max-height: 110px;
     margin: 8px;
     object-fit: contain;
 }
 
-#paper .title {
+.paper .title {
     padding: 1px;
     margin: 1px;
     font-weight: bold;
 }
 
-#paper .authors {
+.paper .authors {
     padding: 1px;
     margin: 1px;
     font-style: italic;
 }
 
-#paper .venue {
+.paper .venue {
     display: inline-block;
     color: #500;
     margin: 1px;
     margin-right: 10px;
 }
 
-#paper .pdflink::before{
+.paper .pdflink::before{
   font-family: FontAwesome;
   color: black;
   margin: 0 5 0 5;
   content: "\f1c1";
 }
 
-#paper .codelink::before{
+.paper .codelink::before{
   font-family: FontAwesome;
   color: black;
   margin: 0 5 0 5;
   content: "\f09b";
 }
 
-#paper .pptlink::before{
+.paper .pptlink::before{
   font-family: FontAwesome;
   color: black;
   margin: 0 5 0 5;
   content: "\f1c4"
 }
 
-#paper .prjlink::before{
+.paper .prjlink::before{
   font-family: FontAwesome;
   color: black;
   margin: 0 5 0 5;

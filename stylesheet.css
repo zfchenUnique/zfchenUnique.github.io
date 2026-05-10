@@ -202,6 +202,200 @@ span.highlight {
   font-size:14px;
 }
 
+.highlight-scroll-panel {
+  position: relative;
+  width: 96%;
+  margin: 0 auto 8px auto;
+  max-height: 250px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+}
+
+.highlight-scroll-panel::after {
+  content: "Scroll for more";
+  position: sticky;
+  left: 0;
+  bottom: 0;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 18px 10px 4px 10px;
+  color: #666;
+  background: linear-gradient(to bottom, rgba(238, 238, 238, 0), #eee 70%);
+  font-size: 12px;
+  font-style: italic;
+  text-align: right;
+  pointer-events: none;
+}
+
+.highlight-scroll-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.highlight-scroll-panel::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 6px;
+}
+
+.highlight-scroll-panel::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.highlight-scroll-panel .grid-container {
+  columns: auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.highlight-scroll-panel .grid-container div {
+  display: block;
+  width: auto;
+  margin: 0;
+}
+
+.report-entry {
+  border-bottom: solid 1px #EEE;
+  margin-bottom: 15px;
+  margin-top: 12px;
+  min-height: 30px;
+  align-items: center;
+}
+
+.report-entry > div {
+  width: 100%;
+  min-width: 0;
+}
+
+.report-entry .title {
+  padding: 1px;
+  margin: 1px;
+  font-weight: bold;
+}
+
+.report-entry .authors {
+  padding: 1px;
+  margin: 1px;
+  font-style: italic;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+
+.report-entry .venue {
+  display: inline-block;
+  color: #500;
+  margin: 1px;
+  margin-right: 10px;
+}
+
+.report-entry .pdflink::before{
+  font-family: FontAwesome;
+  color: black;
+  margin: 0 5 0 5;
+  content: "\f1c1";
+}
+
+.report-entry .codelink::before{
+  font-family: FontAwesome;
+  color: black;
+  margin: 0 5 0 5;
+  content: "\f09b";
+}
+
+.report-entry .prjlink::before{
+  font-family: FontAwesome;
+  color: black;
+  margin: 0 5 0 5;
+  content: "\f085"
+}
+
+.paper-section {
+  max-width: 800px;
+  width: 100%;
+  margin: 18px auto 0 auto;
+}
+
+.paper-section summary {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 20px 6px 20px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.paper-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.paper-section summary::before {
+  content: "\25B8";
+  display: inline-block;
+  color: #555;
+  font-size: 15px;
+  transform: translateY(-1px);
+  transition: transform 0.15s ease;
+}
+
+.paper-section[open] summary::before {
+  transform: rotate(90deg) translateX(-1px);
+}
+
+.paper-section .section-note {
+  color: #333;
+  font-size: 14px;
+}
+
+.version-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 5px;
+}
+
+.version-list > span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.version-title {
+  font-weight: 700;
+}
+
+.version-year {
+  color: #500;
+}
+
+.paper-note {
+  padding: 1px;
+  margin: 1px;
+  color: #555;
+  font-size: 13px;
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .highlight-scroll-panel {
+    width: 94%;
+  }
+
+  .highlight-scroll-panel .grid-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .highlight-scroll-panel .grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+
 .special-link {
   font-size: 22px; /* Set this to your desired font size */
   /* Add any other styles you want for this specific link */
@@ -289,5 +483,3 @@ div.news:hover::-webkit-scrollbar-track {
 li{
     margin-bottom: 3px;
 }
-
-
