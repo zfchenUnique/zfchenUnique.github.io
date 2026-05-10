@@ -291,23 +291,23 @@ span.highlight {
 
 .report-entry .pdflink::before{
   font-family: FontAwesome;
-  color: black;
-  margin: 0 5 0 5;
+  color: #8b2e24;
+  margin: 0 5px 0 0;
   content: "\f1c1";
 }
 
 .report-entry .codelink::before{
   font-family: FontAwesome;
-  color: black;
-  margin: 0 5 0 5;
+  color: #1f2937;
+  margin: 0 5px 0 0;
   content: "\f09b";
 }
 
 .report-entry .prjlink::before{
   font-family: FontAwesome;
-  color: black;
-  margin: 0 5 0 5;
-  content: "\f085"
+  color: #2a6b3f;
+  margin: 0 5px 0 0;
+  content: "\f0ac"
 }
 
 .paper-section {
@@ -410,6 +410,9 @@ div.news {
   overflow-y: scroll;
   overflow-x: hidden;
   margin-top: 0px;
+  padding-right: 6px;
+  scrollbar-color: #9aa4b2 #e5e7eb;
+  scrollbar-width: thin;
 }
 
 ul.news li { 
@@ -420,28 +423,19 @@ ul.sharing li {
   margin-bottom: 3px; 
 }
 
-/* Hide the default scrollbar */
 div.news::-webkit-scrollbar {
-  width: 6px; /* Set the width of the scrollbar */
+  width: 8px;
 }
 
-/* Handle (the draggable part of the scrollbar) */
 div.news::-webkit-scrollbar-thumb {
-  background: transparent;
-}
-
-/* On hover, style the scrollbar handle */
-div.news:hover::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 6px; /* Rounded corners of the handle */
+  background: #9aa4b2;
+  border: 2px solid #e5e7eb;
+  border-radius: 999px;
 }
 
 div.news::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-div.news:hover::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Background color when hovered */
+  background: #e5e7eb;
+  border-radius: 999px;
 }
 
 

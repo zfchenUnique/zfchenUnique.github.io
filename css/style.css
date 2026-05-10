@@ -130,30 +130,69 @@ img {
     margin-right: 10px;
 }
 
-.paper .pdflink::before{
+.paper a.pdflink,
+.paper a.codelink,
+.paper a.pptlink,
+.paper a.prjlink,
+.report-entry a.pdflink,
+.report-entry a.codelink,
+.report-entry a.pptlink,
+.report-entry a.prjlink {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin: 4px 6px 2px 0;
+    padding: 2px 9px;
+    border: 1px solid #d9dee5;
+    border-radius: 999px;
+    background: #fbfcfd;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.4;
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: none;
+    transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.paper a.pdflink:hover,
+.paper a.codelink:hover,
+.paper a.pptlink:hover,
+.paper a.prjlink:hover,
+.report-entry a.pdflink:hover,
+.report-entry a.codelink:hover,
+.report-entry a.pptlink:hover,
+.report-entry a.prjlink:hover {
+    background: #f4f7fa;
+    border-color: #c9d2dc;
+    color: #1f2937;
+}
+
+.paper a.pdflink::before,
+.report-entry a.pdflink::before{
   font-family: FontAwesome;
-  color: black;
-  margin: 0 5 0 5;
+  color: #475569;
   content: "\f1c1";
 }
 
-.paper .codelink::before{
+.paper a.codelink::before,
+.report-entry a.codelink::before{
   font-family: FontAwesome;
-  color: black;
-  margin: 0 5 0 5;
+  color: #475569;
   content: "\f09b";
 }
 
-.paper .pptlink::before{
+.paper a.pptlink::before,
+.report-entry a.pptlink::before{
   font-family: FontAwesome;
-  color: black;
-  margin: 0 5 0 5;
-  content: "\f1c4"
+  color: #475569;
+  content: "\f1c4";
 }
 
-.paper .prjlink::before{
+.paper a.prjlink::before,
+.report-entry a.prjlink::before{
   font-family: FontAwesome;
-  color: black;
-  margin: 0 5 0 5;
-  content: "\f085"
+  color: #475569;
+  content: "\f0ac";
 }
