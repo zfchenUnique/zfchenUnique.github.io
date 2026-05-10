@@ -350,6 +350,40 @@ span.highlight {
   font-size: 14px;
 }
 
+.section-body {
+  padding: 0 20px 6px 42px;
+}
+
+.section-body-paper {
+  padding-left: 20px;
+}
+
+.dissertation-entry {
+  margin-top: 4px;
+}
+
+.section-body ul {
+  margin: 4px 0 0 0;
+  padding-left: 18px;
+}
+
+.section-body li {
+  margin-bottom: 8px;
+}
+
+.experience-table {
+  width: 100%;
+  border: 0;
+  border-spacing: 0;
+  border-collapse: separate;
+  margin: 4px auto 0 auto;
+}
+
+.experience-table td {
+  padding: 4px 0;
+  vertical-align: top;
+}
+
 .version-list {
   display: flex;
   flex-wrap: wrap;
