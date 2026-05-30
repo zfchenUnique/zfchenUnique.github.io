@@ -379,6 +379,29 @@ span.highlight {
   font-size: 14px;
 }
 
+.visitor-map-widget {
+  width: 280px;
+  max-width: 100%;
+  min-height: 140px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.visitor-map-placeholder {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 280px;
+  max-width: 100%;
+  min-height: 140px;
+  padding: 12px;
+  border: 1px solid #d8d8d8;
+  color: #666;
+  font-size: 13px;
+  text-align: center;
+}
+
 .visitor-analytics-note {
   color: #555;
   font-size: 13px;
