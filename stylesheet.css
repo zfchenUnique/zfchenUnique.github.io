@@ -362,6 +362,23 @@ span.highlight {
   margin-top: 4px;
 }
 
+.visitor-counter {
+  display: inline-flex;
+  align-items: center;
+  color: #555;
+  text-decoration: none;
+}
+
+.visitor-counter img {
+  display: block;
+  max-width: 100%;
+  border: 0;
+}
+
+.visitor-counter span {
+  font-size: 14px;
+}
+
 .section-body ul {
   margin: 4px 0 0 0;
   padding-left: 18px;
