@@ -12,7 +12,7 @@
     }
 
     if (placeholder) {
-        placeholder.hidden = true;
+        placeholder.remove();
     }
 
     window._wau = window._wau || [];
@@ -29,10 +29,10 @@
     mapScript.async = true;
     mapScript.src = "https://waust.at/m.js";
     mapScript.onerror = function () {
-        if (placeholder) {
-            placeholder.hidden = false;
-            placeholder.textContent = "Visitor map temporarily unavailable";
-        }
+        var fallback = document.createElement("span");
+        fallback.className = "visitor-map-placeholder";
+        fallback.textContent = "Visitor map temporarily unavailable";
+        widget.appendChild(fallback);
     };
     widget.appendChild(mapScript);
 })();
