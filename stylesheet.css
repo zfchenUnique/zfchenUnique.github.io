@@ -379,6 +379,13 @@ span.highlight {
   font-size: 14px;
 }
 
+.visitor-analytics-note {
+  color: #555;
+  font-size: 13px;
+  line-height: 1.35;
+  margin: 8px 0 0 0;
+}
+
 .section-body ul {
   margin: 4px 0 0 0;
   padding-left: 18px;
