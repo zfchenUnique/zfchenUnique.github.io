@@ -4,7 +4,7 @@ Source for Zhenfang Chen's personal academic website.
 
 ## Visitor analytics
 
-The site uses `hits.sh` for the public visitor badge, whos.amung.us for the public live visitor map, and Google Analytics 4 on the live GitHub Pages domain for private traffic analytics.
+The site uses `hits.sh` for the public visitor badge, MapMyVisitors for the public live visitor map, and Google Analytics 4 on the live GitHub Pages domain for private traffic analytics.
 
 To view visit time, page path, and approximate country/region/city:
 
