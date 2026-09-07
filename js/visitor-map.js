@@ -11,6 +11,13 @@
     var incrementUrl = "https://mantledb.sh/v2/increment/zfchenunique-ghio-visitors-a7c31d/cities";
     var locationUrl = "https://ipwho.is/?fields=success,country_code,city,latitude,longitude";
     var svgNamespace = "http://www.w3.org/2000/svg";
+    var countryStats = document.getElementById("visitor-country-stats");
+    var countryNames;
+    try {
+        countryNames = new Intl.DisplayNames(["en"], { type: "region" });
+    } catch (error) {
+        // Region codes remain usable on browsers without Intl.DisplayNames.
+    }
 
     widget.replaceChildren();
     widget.setAttribute("aria-busy", "true");
@@ -73,12 +80,20 @@
     }
 
     function locationKey(location) {
+        var mapped = hasCityCoordinates(location.city, location.latitude, location.longitude);
         return [
             cleanLabel(location.country_code, "XX").toUpperCase().slice(0, 2),
             encodeURIComponent(cleanLabel(location.city, "Unknown")),
-            Number(location.latitude).toFixed(2),
-            Number(location.longitude).toFixed(2)
+            mapped ? Number(location.latitude).toFixed(2) : "",
+            mapped ? Number(location.longitude).toFixed(2) : ""
         ].join("|");
+    }
+
+    function hasCityCoordinates(city, latitude, longitude) {
+        return typeof city === "string" && city.trim() !== "" && city !== "Unknown" &&
+            latitude !== null && latitude !== "" && longitude !== null && longitude !== "" &&
+            Number.isFinite(Number(latitude)) && Math.abs(Number(latitude)) <= 90 &&
+            Number.isFinite(Number(longitude)) && Math.abs(Number(longitude)) <= 180;
     }
 
     function parseLocations(cityCounts) {
@@ -99,25 +114,73 @@
                 return null;
             }
 
-            if (!/^[A-Z]{2}$/.test(parts[0] || "") ||
+            if (parts.length !== 4 || !/^[A-Z]{2}$/.test(parts[0] || "") ||
                 !city || city.length > 60 ||
-                !Number.isFinite(latitude) || !Number.isFinite(longitude) ||
-                latitude < -90 || latitude > 90 ||
-                longitude < -180 || longitude > 180 ||
-                !Number.isFinite(count) || count < 1) {
+                !Number.isSafeInteger(count) || count < 1) {
                 return null;
             }
 
+            var mapped = hasCityCoordinates(city, parts[2], parts[3]);
             return {
                 countryCode: parts[0],
                 city: city,
-                latitude: latitude,
-                longitude: longitude,
-                count: Math.min(Math.round(count), 1000000)
+                latitude: mapped ? latitude : null,
+                longitude: mapped ? longitude : null,
+                count: count
             };
         }).filter(Boolean).sort(function (left, right) {
             return right.count - left.count;
-        }).slice(0, 100);
+        });
+    }
+
+    function renderCountries(locations) {
+        if (!countryStats) {
+            return;
+        }
+        countryStats.replaceChildren();
+        var counts = Object.create(null);
+        var total = 0;
+        locations.forEach(function (location) {
+            counts[location.countryCode] = (counts[location.countryCode] || 0) + location.count;
+            total += location.count;
+        });
+        if (!total) {
+            countryStats.textContent = "No country visits recorded yet.";
+            return;
+        }
+
+        var table = document.createElement("table");
+        table.className = "visitor-country-table";
+        var caption = document.createElement("caption");
+        caption.textContent = "Visits by country / region";
+        table.appendChild(caption);
+        var head = table.createTHead().insertRow();
+        ["Country / region", "Visits", "Share"].forEach(function (label) {
+            var cell = document.createElement("th");
+            cell.scope = "col";
+            cell.textContent = label;
+            head.appendChild(cell);
+        });
+        var body = table.createTBody();
+        Object.keys(counts).sort(function (left, right) {
+            return counts[right] - counts[left] || left.localeCompare(right);
+        }).forEach(function (code) {
+            var row = body.insertRow();
+            var name = document.createElement("th");
+            name.scope = "row";
+            name.textContent = code === "XX" ? "Unknown" : countryNames ? countryNames.of(code) : code;
+            row.appendChild(name);
+            row.insertCell().textContent = counts[code].toLocaleString("en");
+            row.insertCell().textContent = (counts[code] / total * 100).toFixed(1) + "%";
+        });
+        var footer = table.createTFoot().insertRow();
+        var totalLabel = document.createElement("th");
+        totalLabel.scope = "row";
+        totalLabel.textContent = "Total recorded";
+        footer.appendChild(totalLabel);
+        footer.insertCell().textContent = total.toLocaleString("en");
+        footer.insertCell().textContent = "100%";
+        countryStats.appendChild(table);
     }
 
     function matchesRecent(location, recent) {
@@ -129,9 +192,15 @@
     }
 
     function renderMap(locations, recent) {
+        // Country totals include every record, even those without a city or
+        // beyond the map's display limit of 100 dots.
+        renderCountries(locations);
+        var mappedLocations = locations.filter(function (location) {
+            return location.latitude !== null && location.longitude !== null;
+        });
         overlay.replaceChildren();
 
-        locations.forEach(function (location) {
+        mappedLocations.slice(0, 100).forEach(function (location) {
             var circle = document.createElementNS(svgNamespace, "circle");
             var x = (location.longitude + 180) / 360 * 280;
             var y = (90 - location.latitude) / 180 * 140;
@@ -150,7 +219,7 @@
             overlay.appendChild(circle);
         });
 
-        var chineseCities = locations.filter(function (location) {
+        var chineseCities = mappedLocations.filter(function (location) {
             return location.countryCode === "CN";
         }).slice(0, 5);
         var recentText = recent && recent.city ? "Latest: " + recent.city + ", " + recent.countryCode : "";
@@ -173,7 +242,9 @@
                 summary.appendChild(chinaLine);
             }
             if (!recentText && !chinaText) {
-                summary.textContent = locations.length + " visitor " + (locations.length === 1 ? "city" : "cities");
+                summary.textContent = mappedLocations.length ?
+                    mappedLocations.length + " visitor " + (mappedLocations.length === 1 ? "city" : "cities") :
+                    "Visits recorded; city locations unavailable.";
             }
         }
 
@@ -187,7 +258,7 @@
         var latitude = Number(recent.latitude);
         var longitude = Number(recent.longitude);
         if (!recent.city || !/^[A-Z]{2}$/.test(recent.countryCode || "") ||
-            !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+            !hasCityCoordinates(recent.city, recent.latitude, recent.longitude)) {
             return null;
         }
         return {
@@ -201,11 +272,14 @@
     function loadMapData() {
         return Promise.all([
             fetchJson(citiesUrl),
-            fetchJson(recentUrl)
+            fetchJson(recentUrl).catch(function () { return null; })
         ]).then(function (results) {
             renderMap(parseLocations(results[0]), normalizedRecent(results[1]));
         }).catch(function () {
             summary.textContent = "City data temporarily unavailable.";
+            if (countryStats) {
+                countryStats.textContent = "Country data temporarily unavailable.";
+            }
             widget.setAttribute("aria-busy", "false");
         });
     }
@@ -263,20 +337,18 @@
         }
 
         return fetchJson(locationUrl).then(function (location) {
-            var latitude = Number(location && location.latitude);
-            var longitude = Number(location && location.longitude);
-            if (!location || location.success !== true || !location.city ||
-                !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+            if (!location || location.success !== true || !/^[A-Z]{2}$/.test(location.country_code || "")) {
                 return false;
             }
 
+            var mapped = hasCityCoordinates(location.city, location.latitude, location.longitude);
             var countryCode = cleanLabel(location.country_code, "XX").toUpperCase().slice(0, 2);
             var city = cleanLabel(location.city, "Unknown");
             var recent = {
                 countryCode: countryCode,
                 city: city,
-                latitude: Number(latitude.toFixed(2)),
-                longitude: Number(longitude.toFixed(2)),
+                latitude: mapped ? Number(Number(location.latitude).toFixed(2)) : null,
+                longitude: mapped ? Number(Number(location.longitude).toFixed(2)) : null,
                 seenAt: new Date().toISOString()
             };
             var body = JSON.stringify({
@@ -284,17 +356,17 @@
                 by: 1
             });
 
-            return Promise.all([
-                incrementCity(body),
-                fetchJson(recentUrl, {
+            return incrementCity(body).then(function () {
+                markRecordedThisSession();
+                if (!mapped) {
+                    return true;
+                }
+                return fetchJson(recentUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(recent),
                     keepalive: true
-                })
-            ]).then(function () {
-                markRecordedThisSession();
-                return true;
+                }).catch(function () { return null; }).then(function () { return true; });
             });
         }).catch(function () {
             return false;
