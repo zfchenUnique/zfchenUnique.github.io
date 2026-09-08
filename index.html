@@ -834,23 +834,52 @@
             </div>
           </details>
 
-          <details class="paper-section">
+          <details class="paper-section" id="visitors" open>
             <summary><heading>Visitors</heading></summary>
             <div class="section-body section-body-paper">
               <div class="visitor-panel">
                 <div class="visitor-panel-header">
-                  <span class="visitor-panel-title">Live visitor map</span>
-                  <a class="visitor-counter" href="https://hits.sh/zfchenunique.github.io/" target="_blank" rel="noopener" title="Visitor counter">
-                    <img src="https://hits.sh/zfchenunique.github.io.svg?view=today-total&label=Visitors&color=0f766e&labelColor=555555" alt="Visitor counter: today and total visits" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
-                    <span hidden>Visitor counter unavailable</span>
+                  <div>
+                    <h3 class="visitor-panel-title">Visitor activity</h3>
+                    <p class="visitor-panel-subtitle">zfchenunique.github.io</p>
+                  </div>
+                  <a class="visitor-counter" href="https://hits.sh/zfchenunique.github.io/" target="_blank" rel="noopener" title="Page hits today and all time (not unique people)">
+                    <img src="https://hits.sh/zfchenunique.github.io.svg?view=today-total&amp;label=Page%20hits&amp;color=0f766e&amp;labelColor=334155" alt="Page hits: today and all time" onerror="this.hidden=true;this.nextElementSibling.hidden=false;">
+                    <span hidden>Page counter unavailable</span>
                   </a>
                 </div>
-                <div class="visitor-map-widget" id="visitor-map-widget" aria-label="Live visitor map">
-                  <span class="visitor-map-placeholder">Map appears on the live site.</span>
+                <div class="visitor-panel-grid">
+                  <div>
+                    <h4 class="visitor-section-label">Visitor locations</h4>
+                    <div class="visitor-map-widget" id="visitor-map-widget" aria-label="Visitor location map">
+                      <span class="visitor-map-placeholder" role="status">Loading visitor locations…</span>
+                    </div>
+                    <p class="visitor-analytics-note">Hover over or focus a dot to see its city and visits. Locations are approximate.</p>
+                  </div>
+                  <div class="visitor-reports">
+                    <h4 class="visitor-section-label">Private traffic reports</h4>
+                    <dl class="visitor-report-list">
+                      <div><dt>When</dt><dd>Recent activity and visits over time</dd></div>
+                      <div><dt>Where</dt><dd>Approximate visitor city and country</dd></div>
+                      <div><dt>Which page</dt><dd>Page paths and view counts</dd></div>
+                    </dl>
+                    <a class="visitor-dashboard-link" href="https://analytics.google.com/" target="_blank" rel="noopener">Open Google Analytics <span aria-hidden="true">↗</span></a>
+                    <p class="visitor-analytics-note">Owner access required. Select this website’s property after signing in.</p>
+                  </div>
                 </div>
                 <div class="visitor-country-stats" id="visitor-country-stats">Loading country visits…</div>
                 <p class="visitor-analytics-note">Country totals start Sep 7, 2026 and exclude earlier history. The badge is a separate counter.</p>
                 <p class="visitor-analytics-note">One visit per tab session. City locations are approximate; only aggregate locations are saved.</p>
+                <details class="visitor-report-help">
+                  <summary>How to view time, city and page together</summary>
+                  <ol>
+                    <li>In Google Analytics, select the property for this website and open <strong>Explore → Free form</strong>.</li>
+                    <li>Add <strong>Date + hour</strong>, <strong>City</strong> and <strong>Page path and screen class</strong> as dimensions, and <strong>Views</strong> as a metric.</li>
+                    <li>Put the dimensions in Rows and Views in Values. Choose your date range, then filter by city or page as needed.</li>
+                  </ol>
+                  <p>For recent activity, open the Realtime report. Historical reports use the property’s time zone and may take time to update. These are aggregated statistics, not a log of individual IP addresses; Google Analytics does not store raw IPs.</p>
+                </details>
+                <p class="visitor-analytics-note visitor-panel-footer">Page hits and analytics use different counting methods; totals may differ. Detailed traffic data is viewed in Google Analytics and is not loaded into this public page.</p>
               </div>
             </div>
           </details>
