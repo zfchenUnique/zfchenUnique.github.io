@@ -867,6 +867,25 @@
                     <p class="visitor-analytics-note">Owner access required. Select this website’s property after signing in.</p>
                   </div>
                 </div>
+                <section class="visitor-records" aria-labelledby="visitor-records-title">
+                  <h4 id="visitor-records-title">City visit statistics</h4>
+                  <p class="visitor-analytics-note">Cumulative visits from the map tracker, not GA4. Individual visit history is not stored.</p>
+                  <p id="visitor-totals" class="visitor-totals">Loading statistics…</p>
+                  <p id="visitor-latest" class="visitor-analytics-note"></p>
+                  <div class="visitor-controls">
+                    <label>City or country<input id="visitor-search" type="search" placeholder="Beijing, CN, United States…"></label>
+                    <label>Sort by<select id="visitor-sort"><option value="visits">Most visits</option><option value="city">City A–Z</option><option value="country">Country A–Z</option></select></label>
+                    <button id="visitor-refresh" type="button">Refresh</button>
+                  </div>
+                  <p id="visitor-data-status" class="visitor-analytics-note" role="status">Loading…</p>
+                  <div class="visitor-city-scroll" tabindex="0" role="region" aria-label="City visit statistics table">
+                    <table class="visitor-country-table visitor-city-table">
+                      <caption>All recorded city locations</caption>
+                      <thead><tr><th scope="col">City</th><th scope="col">Country / region</th><th scope="col">Visits</th><th scope="col">Share of all visits</th></tr></thead>
+                      <tbody id="visitor-city-rows"></tbody>
+                    </table>
+                  </div>
+                </section>
                 <div class="visitor-country-stats" id="visitor-country-stats">Loading country visits…</div>
                 <p class="visitor-analytics-note">Country totals start Sep 7, 2026 and exclude earlier history. The badge is a separate counter.</p>
                 <p class="visitor-analytics-note">One visit per tab session. City locations are approximate; only aggregate locations are saved.</p>

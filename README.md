@@ -24,3 +24,9 @@ The GA4 measurement ID in the source is a collection identifier, not a reporting
 The hits.sh badge counts page hits rather than unique people; its totals need not match GA4 or the city tracker. Individual visits with raw IP addresses would require a separate authenticated backend and a new collection integration; this static website does not currently implement that service.
 
 Local previews through `file://`, `localhost`, or `127.0.0.1` do not load GA4 and do not record public-map visits. They can still display the current public city totals for visual testing.
+
+## Automatic city statistics table
+
+The Visitors panel reads the same city aggregates as the map and displays all location entries in a searchable, sortable table. Shares always use all recorded visits as the denominator, including while filtering. The latest located visit displays the stored timestamp in the viewer's local time zone. Individual visit history, raw IPs and page paths are not available from this tracker.
+
+A manual Refresh button and a 60-second refresh while the panel is open and the page is visible only read existing data. They do not count additional visits. Failed refreshes keep the previous city table with a stale-data message.

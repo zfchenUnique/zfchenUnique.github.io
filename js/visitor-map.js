@@ -12,6 +12,75 @@
     var locationUrl = "https://ipwho.is/?fields=success,country_code,city,latitude,longitude";
     var svgNamespace = "http://www.w3.org/2000/svg";
     var countryStats = document.getElementById("visitor-country-stats");
+    var cityRows = document.getElementById("visitor-city-rows");
+    var searchInput = document.getElementById("visitor-search");
+    var sortInput = document.getElementById("visitor-sort");
+    var refreshButton = document.getElementById("visitor-refresh");
+    var dataStatus = document.getElementById("visitor-data-status");
+    var currentLocations = [];
+    var loading = false;
+    var hasData = false;
+
+    function countryLabel(code) {
+        return code === "XX" ? "Unknown" : countryNames ? countryNames.of(code) : code;
+    }
+
+    function renderCityTable() {
+        if (!cityRows) return;
+        var query = searchInput.value.trim().toLocaleLowerCase();
+        var total = currentLocations.reduce(function (sum, location) { return sum + location.count; }, 0);
+        var filtered = currentLocations.filter(function (location) {
+            return (location.city + " " + location.countryCode + " " + countryLabel(location.countryCode)).toLocaleLowerCase().includes(query);
+        }).sort(function (a, b) {
+            if (sortInput.value === "city") return a.city.localeCompare(b.city) || b.count - a.count;
+            if (sortInput.value === "country") return countryLabel(a.countryCode).localeCompare(countryLabel(b.countryCode)) || b.count - a.count;
+            return b.count - a.count || a.city.localeCompare(b.city);
+        });
+        cityRows.replaceChildren();
+        filtered.forEach(function (location) {
+            var row = document.createElement("tr");
+            [location.city, countryLabel(location.countryCode), location.count.toLocaleString("en"), (location.count / total * 100).toFixed(1) + "%"].forEach(function (value, index) {
+                var cell = document.createElement(index === 0 ? "th" : "td");
+                if (index === 0) cell.scope = "row";
+                cell.textContent = value;
+                row.appendChild(cell);
+            });
+            cityRows.appendChild(row);
+        });
+        if (!filtered.length) {
+            var row = document.createElement("tr");
+            var cell = document.createElement("td");
+            cell.colSpan = 4;
+            cell.textContent = currentLocations.length ? "No matching cities or countries." : "No visits recorded yet.";
+            row.appendChild(cell);
+            cityRows.appendChild(row);
+        }
+        var countries = new Set(currentLocations.map(function (location) { return location.countryCode; }));
+        document.getElementById("visitor-totals").textContent = total.toLocaleString("en") + " visits · " + currentLocations.length + " location entries · " + countries.size + " countries / regions";
+    }
+
+    function renderStatistics(locations, recent) {
+        if (!cityRows) return;
+        currentLocations = locations;
+        hasData = true;
+        renderCityTable();
+        var latest = document.getElementById("visitor-latest");
+        var timestamp = recent && recent.seenAt && new Date(recent.seenAt);
+        latest.textContent = recent ? "Latest located visit: " + recent.city + ", " + countryLabel(recent.countryCode) +
+            (timestamp && Number.isFinite(timestamp.getTime()) ? " · " + timestamp.toLocaleString(undefined, { timeZoneName: "short" }) : " · Time unavailable") : "Latest visit unavailable.";
+        dataStatus.textContent = "Updated " + new Date().toLocaleTimeString() + " · Refreshes every 60 seconds while this panel is visible.";
+    }
+
+    if (cityRows) {
+        searchInput.addEventListener("input", renderCityTable);
+        sortInput.addEventListener("change", renderCityTable);
+        refreshButton.addEventListener("click", loadMapData);
+        window.setInterval(function () {
+            var section = document.getElementById("visitors");
+            if (!document.hidden && section && section.open) loadMapData();
+        }, 60000);
+    }
+
     var countryNames;
     try {
         countryNames = new Intl.DisplayNames(["en"], { type: "region" });
@@ -265,22 +334,37 @@
             countryCode: recent.countryCode,
             city: cleanLabel(recent.city, "Unknown"),
             latitude: latitude,
-            longitude: longitude
+            longitude: longitude,
+            seenAt: typeof recent.seenAt === "string" ? recent.seenAt : null
         };
     }
 
     function loadMapData() {
+        if (loading) return Promise.resolve();
+        loading = true;
+        if (refreshButton) refreshButton.disabled = true;
+        if (dataStatus) dataStatus.textContent = "Refreshing statistics…";
         return Promise.all([
             fetchJson(citiesUrl),
             fetchJson(recentUrl).catch(function () { return null; })
         ]).then(function (results) {
-            renderMap(parseLocations(results[0]), normalizedRecent(results[1]));
+            var locations = parseLocations(results[0]);
+            var recent = normalizedRecent(results[1]);
+            renderMap(locations, recent);
+            renderStatistics(locations, recent);
         }).catch(function () {
+            if (dataStatus) dataStatus.textContent = hasData ? "Refresh failed. Showing the last successful data; try Refresh again." : "Statistics could not load. Try Refresh again.";
+            if (cityRows && !hasData) {
+                document.getElementById("visitor-totals").textContent = "Statistics unavailable";
+            }
             summary.textContent = "City data temporarily unavailable.";
             if (countryStats) {
                 countryStats.textContent = "Country data temporarily unavailable.";
             }
             widget.setAttribute("aria-busy", "false");
+        }).finally(function () {
+            loading = false;
+            if (refreshButton) refreshButton.disabled = false;
         });
     }
 

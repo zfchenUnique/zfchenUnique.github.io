@@ -8,7 +8,8 @@ const source = fs.readFileSync(path.join(__dirname, '../js/visitor-map.js'), 'ut
 
 // A small DOM adapter exercises the production script without network traffic.
 class Element {
-    constructor(tag) { this.tag = tag; this.children = []; this.attributes = {}; this.textContent = ''; }
+    constructor(tag) { this.tag = tag; this.children = []; this.attributes = {}; this.textContent = ''; this.value = ''; this.listeners = {}; }
+    addEventListener(name, callback) { this.listeners[name] = callback; }
     appendChild(child) { this.children.push(child); return child; }
     replaceChildren(...children) { this.children = children; this.textContent = ''; }
     setAttribute(name, value) { this.attributes[name] = value; }
@@ -20,13 +21,17 @@ class Element {
     find(tag) { return this.children.flatMap(child => [child, ...child.find('*')]).filter(child => tag === '*' || child.tag === tag); }
 }
 
-async function run({ counts = {}, location, recentFailure = false, countsFailure = false, storage = new Map(), legacyBrowser = false } = {}) {
+async function run({ counts = {}, location, recentFailure = false, countsFailure = false, storage = new Map(), legacyBrowser = false, statistics = false } = {}) {
     const widget = new Element('div');
     const countries = new Element('div');
     const requests = [];
+    const ui = Object.fromEntries(['visitor-city-rows', 'visitor-search', 'visitor-sort', 'visitor-refresh', 'visitor-data-status', 'visitor-totals', 'visitor-latest', 'visitors'].map(id => [id, new Element('div')]));
+    ui['visitor-sort'].value = 'visits';
+    const timers = [];
+
     const window = {
         location: { hostname: location ? 'zfchenunique.github.io' : '' },
-        setTimeout, clearTimeout,
+        setTimeout, clearTimeout, setInterval: callback => timers.push(callback),
         sessionStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value) },
         fetch: async (url, options) => {
             requests.push({ url, options });
@@ -46,13 +51,13 @@ async function run({ counts = {}, location, recentFailure = false, countsFailure
     vm.runInNewContext(source, {
         window, AbortController, Intl: legacyBrowser ? {} : Intl,
         document: {
-            getElementById: id => id === 'visitor-map-widget' ? widget : countries,
+            getElementById: id => id === 'visitor-map-widget' ? widget : id === 'visitor-country-stats' ? countries : statistics ? ui[id] : null,
             createElement: tag => new Element(tag),
             createElementNS: (_, tag) => new Element(tag)
         }
     });
     await new Promise(resolve => setImmediate(resolve));
-    return { widget, countries, requests, counts, storage };
+    return { widget, countries, requests, counts, storage, ui, timers };
 }
 
 function rows(panel, section = 'tbody') {
@@ -108,4 +113,32 @@ test('empty and failed reads remain distinct; older browsers fall back to region
     assert.equal((await run({ countsFailure: true })).countries.textContent, 'Country data temporarily unavailable.');
     const result = await run({ counts: { 'CN|Unknown||': 1 }, legacyBrowser: true });
     assert.equal(rows(result.countries)[0][0], 'CN');
+});
+
+
+test('city statistics include all rows; filters retain global shares and refresh never records preview visits', async () => {
+    const result = await run({ statistics: true, counts: {
+        'CN|Beijing|39.91|116.40': 3, 'CN|Shijiazhuang|38.04|114.48': 1,
+        'US|Seattle|47.61|-122.33': 6
+    } });
+    const ui = result.ui;
+    const table = () => ui['visitor-city-rows'].children.map(row => row.children.map(cell => cell.textContent));
+    assert.equal(table().length, 3);
+    assert.equal(table()[0][0], 'Seattle');
+    ui['visitor-search'].value = 'CN';
+    ui['visitor-search'].listeners.input();
+    assert.deepEqual(table().map(row => [row[0], row[3]]), [['Beijing', '30.0%'], ['Shijiazhuang', '10.0%']]);
+    ui['visitor-search'].value = '';
+    ui['visitor-sort'].value = 'city';
+    ui['visitor-sort'].listeners.change();
+    assert.equal(table()[0][0], 'Beijing');
+    ui['visitor-search'].value = 'no such city';
+    ui['visitor-search'].listeners.input();
+    assert.equal(table()[0][0], 'No matching cities or countries.');
+    await ui['visitor-refresh'].listeners.click();
+    ui.visitors.open = true;
+    result.timers[0]();
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(result.requests.filter(request => request.options.method === 'POST').length, 0);
+    assert.equal(ui['visitor-refresh'].disabled, false);
 });
