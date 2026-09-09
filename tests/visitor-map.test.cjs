@@ -21,16 +21,17 @@ class Element {
     find(tag) { return this.children.flatMap(child => [child, ...child.find('*')]).filter(child => tag === '*' || child.tag === tag); }
 }
 
-async function run({ counts = {}, location, recentFailure = false, countsFailure = false, storage = new Map(), legacyBrowser = false, statistics = false } = {}) {
+async function run({ counts = {}, location, recentFailure = false, countsFailure = false, storage = new Map(), legacyBrowser = false, statistics = false, history = {} } = {}) {
     const widget = new Element('div');
     const countries = new Element('div');
     const requests = [];
-    const ui = Object.fromEntries(['visitor-city-rows', 'visitor-search', 'visitor-sort', 'visitor-refresh', 'visitor-data-status', 'visitor-totals', 'visitor-latest', 'visitors'].map(id => [id, new Element('div')]));
+    const ui = Object.fromEntries(['visitor-city-rows', 'visitor-search', 'visitor-sort', 'visitor-refresh', 'visitor-data-status', 'visitor-totals', 'visitor-latest', 'visitors', 'visitor-history-rows', 'visitor-history-status', 'visitor-history-refresh'].map(id => [id, new Element('div')]));
     ui['visitor-sort'].value = 'visits';
     const timers = [];
 
     const window = {
-        location: { hostname: location ? 'zfchenunique.github.io' : '' },
+        crypto: require('node:crypto').webcrypto,
+        location: { pathname: '/test-page', hostname: location ? 'zfchenunique.github.io' : '' },
         setTimeout, clearTimeout, setInterval: callback => timers.push(callback),
         sessionStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value) },
         fetch: async (url, options) => {
@@ -44,6 +45,13 @@ async function run({ counts = {}, location, recentFailure = false, countsFailure
                 counts[key] = (counts[key] || 0) + by;
                 data = { success: true };
             } else if (url.endsWith('/cities')) data = counts;
+            else if (url.endsWith('/visit-history')) {
+                if (options.method === 'PATCH') {
+                    Object.assign(history, JSON.parse(options.body));
+                    data = { success: true };
+                } else data = history;
+            }
+            else if (options.method === 'PATCH') data = { success: true };
             else if (options.method === 'POST') data = { success: true };
             return { status: data === null ? 404 : 200, ok: true, json: async () => data };
         }
@@ -141,4 +149,34 @@ test('city statistics include all rows; filters retain global shares and refresh
     await new Promise(resolve => setImmediate(resolve));
     assert.equal(result.requests.filter(request => request.options.method === 'POST').length, 0);
     assert.equal(ui['visitor-refresh'].disabled, false);
+});
+
+
+test('timestamp records contain city, arrival time and path without raw IPs; session refresh does not duplicate them', async () => {
+    const location = { success: true, country_code: 'CN', city: 'Beijing', latitude: 39.91, longitude: 116.4 };
+    const first = await run({ location });
+    const writes = first.requests.filter(request => request.options.method === 'PATCH');
+    assert.equal(writes.length, 1);
+    const entry = Object.values(JSON.parse(writes[0].options.body))[0];
+    assert.equal(entry.city, 'Beijing');
+    assert.equal(entry.path, '/test-page');
+    assert.ok(Number.isFinite(Date.parse(entry.seenAt)));
+    assert.deepEqual(Object.keys(entry).sort(), ['city', 'countryCode', 'path', 'seenAt']);
+    const next = await run({ location, storage: first.storage, counts: first.counts });
+    assert.equal(next.requests.filter(request => request.options.method === 'PATCH').length, 0);
+});
+
+
+test('history table sorts newest first and pruning preserves recent records', async () => {
+    const history = Object.fromEntries(Array.from({ length: 105 }, (_, i) => ['record-' + i, {
+        city: 'City' + i, countryCode: 'CN', path: '/', seenAt: new Date(Date.UTC(2026, 8, 1, 0, i)).toISOString()
+    }]));
+    const result = await run({ history, statistics: true });
+    const rows = result.ui['visitor-history-rows'].children;
+    assert.equal(rows.length, 100);
+    assert.equal(rows[0].children[1].textContent, 'City104');
+    const recorded = await run({ history, location: { success: true, city: 'Beijing', country_code: 'CN', latitude: 39, longitude: 116 } });
+    const patch = JSON.parse(recorded.requests.find(r => r.options.method === 'PATCH').options.body);
+    assert.equal(Object.values(patch).filter(value => value === null).length, 6);
+    assert.equal(patch['record-104'], undefined);
 });

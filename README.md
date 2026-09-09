@@ -27,6 +27,12 @@ Local previews through `file://`, `localhost`, or `127.0.0.1` do not load GA4 an
 
 ## Automatic city statistics table
 
-The Visitors panel reads the same city aggregates as the map and displays all location entries in a searchable, sortable table. Shares always use all recorded visits as the denominator, including while filtering. The latest located visit displays the stored timestamp in the viewer's local time zone. Individual visit history, raw IPs and page paths are not available from this tracker.
+The Visitors panel reads the same city aggregates as the map and displays all location entries in a searchable, sortable table. Shares always use all recorded visits as the denominator, including while filtering. The latest located visit displays the stored timestamp in the viewer's local time zone. The recent visit table stores timestamped tab sessions separately; raw IPs are not stored.
 
 A manual Refresh button and a 60-second refresh while the panel is open and the page is visible only read existing data. They do not count additional visits. Failed refreshes keep the previous city table with a stale-data message.
+
+## Recent visit timestamps
+
+Starting with this update, a successfully located and counted tab session also writes arrival time (ISO UTC from the visitor device), city, country code and pathname to `visit-history`. Query strings, fragments and raw IPs are excluded. The public table shows the latest 100 records in the viewer’s local time zone. Previous aggregate counts cannot be backfilled. Existing tab sessions already counted before this update begin recording on their next new tab session.
+
+Writes use UUID fields and merge patches so simultaneous new records do not replace each other. Each write removes observed entries beyond the newest 99 before adding itself; concurrent writes may temporarily leave more than 100 stored records until another write prunes them. City totals remain independent of history retention and history write failures. This is public, browser-reported telemetry, not an authenticated audit log. MantleDB free storage limits and network failures can prevent writes; a failed write is displayed in the history status. The unclaimed namespace may expire after 30 days without writes.

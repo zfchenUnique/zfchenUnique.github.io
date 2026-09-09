@@ -4,6 +4,7 @@
         return;
     }
 
+    var arrivalTime = new Date().toISOString();
     var isLiveSite = window.location.hostname === "zfchenunique.github.io";
     var storeBase = "https://mantledb.sh/v2/zfchenunique-ghio-visitors-a7c31d";
     var citiesUrl = storeBase + "/cities";
@@ -77,7 +78,7 @@
         refreshButton.addEventListener("click", loadMapData);
         window.setInterval(function () {
             var section = document.getElementById("visitors");
-            if (!document.hidden && section && section.open) loadMapData();
+            if (!document.hidden && section && section.open) { loadMapData(); loadHistory(); }
         }, 60000);
     }
 
@@ -368,6 +369,78 @@
         });
     }
 
+    // History is bounded separately from the all-time city aggregates.
+    var historyUrl = storeBase + "/visit-history";
+    var historyRows = document.getElementById("visitor-history-rows");
+    var historyStatus = document.getElementById("visitor-history-status");
+    var historyBusy = false;
+
+    function historyEntries(data) {
+        if (!data || typeof data !== "object" || Array.isArray(data)) return [];
+        return Object.keys(data).filter(function (key) {
+            var entry = data[key];
+            return /^[a-zA-Z0-9-]+$/.test(key) && entry && typeof entry.seenAt === "string" &&
+                Number.isFinite(Date.parse(entry.seenAt)) && typeof entry.city === "string" &&
+                /^[A-Z]{2}$/.test(entry.countryCode) && typeof entry.path === "string";
+        }).map(function (key) { return { key: key, entry: data[key] }; }).sort(function (a, b) {
+            return Date.parse(b.entry.seenAt) - Date.parse(a.entry.seenAt) || a.key.localeCompare(b.key);
+        });
+    }
+
+    function loadHistory() {
+        if (!historyRows || historyBusy) return Promise.resolve();
+        historyBusy = true;
+        return fetchJson(historyUrl).then(function (data) {
+            var entries = historyEntries(data).slice(0, 100);
+            historyRows.replaceChildren();
+            entries.forEach(function (item) {
+                var entry = item.entry;
+                var row = document.createElement("tr");
+                [new Date(entry.seenAt).toLocaleString(undefined, { timeZoneName: "short" }),
+                    cleanLabel(entry.city, "Unknown"), countryLabel(entry.countryCode), entry.path.slice(0, 160)].forEach(function (value) {
+                    var cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                historyRows.appendChild(row);
+            });
+            historyStatus.textContent = entries.length ? entries.length + " recent visits · Updated " + new Date().toLocaleTimeString() : "No timestamped visits yet. Recording starts with this update.";
+        }).catch(function () {
+            historyStatus.textContent = "Could not refresh visit history. Any rows shown are from the last successful read.";
+        }).finally(function () { historyBusy = false; });
+    }
+
+    function saveHistory(recent) {
+        var entry = {
+            seenAt: arrivalTime,
+            city: recent.city,
+            countryCode: recent.countryCode,
+            path: (window.location.pathname || "/").slice(0, 160)
+        };
+        var key = window.crypto.randomUUID();
+        return fetchJson(historyUrl).then(function (data) {
+            var patch = {};
+            // Remove only old keys observed in this snapshot. Concurrent new
+            // records have independent UUID keys and are never overwritten.
+            historyEntries(data).slice(99).forEach(function (item) { patch[item.key] = null; });
+            patch[key] = entry;
+            return fetchJson(historyUrl, {
+                method: "PATCH", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(patch), keepalive: true
+            });
+        }).then(function (result) {
+            if (!result) throw new Error("History storage unavailable");
+            return loadHistory();
+        }).catch(function () {
+            if (historyStatus) historyStatus.textContent = "This visit's time could not be saved. City totals may still include it.";
+        });
+    }
+
+    if (historyRows) {
+        document.getElementById("visitor-history-refresh").addEventListener("click", loadHistory);
+        loadHistory();
+    }
+
     function hasRecordedThisSession() {
         try {
             return window.sessionStorage.getItem("zfchen-city-visit-recorded") === "1";
@@ -433,7 +506,7 @@
                 city: city,
                 latitude: mapped ? Number(Number(location.latitude).toFixed(2)) : null,
                 longitude: mapped ? Number(Number(location.longitude).toFixed(2)) : null,
-                seenAt: new Date().toISOString()
+                seenAt: arrivalTime
             };
             var body = JSON.stringify({
                 key: locationKey(location),
@@ -442,15 +515,16 @@
 
             return incrementCity(body).then(function () {
                 markRecordedThisSession();
+                var historyWrite = saveHistory(recent);
                 if (!mapped) {
-                    return true;
+                    return historyWrite.then(function () { return true; });
                 }
-                return fetchJson(recentUrl, {
+                return Promise.all([historyWrite, fetchJson(recentUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(recent),
                     keepalive: true
-                }).catch(function () { return null; }).then(function () { return true; });
+                }).catch(function () { return null; })]).then(function () { return true; });
             });
         }).catch(function () {
             return false;

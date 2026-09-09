@@ -869,7 +869,7 @@
                 </div>
                 <section class="visitor-records" aria-labelledby="visitor-records-title">
                   <h4 id="visitor-records-title">City visit statistics</h4>
-                  <p class="visitor-analytics-note">Cumulative visits from the map tracker, not GA4. Individual visit history is not stored.</p>
+                  <p class="visitor-analytics-note">Cumulative visits from the map tracker, not GA4. Timestamped visits are listed separately below.</p>
                   <p id="visitor-totals" class="visitor-totals">Loading statistics…</p>
                   <p id="visitor-latest" class="visitor-analytics-note"></p>
                   <div class="visitor-controls">
@@ -886,9 +886,21 @@
                     </table>
                   </div>
                 </section>
+                <section class="visitor-records" aria-labelledby="visitor-history-title">
+                  <h4 id="visitor-history-title">Recent visit times</h4>
+                  <p class="visitor-analytics-note">Latest 100 recorded tab sessions, newest first. Times use your local time zone and visitors’ device clocks. Public city and page records; no raw IP addresses. Earlier visits cannot be reconstructed.</p>
+                  <div class="visitor-controls"><button type="button" id="visitor-history-refresh">Refresh visit history</button></div>
+                  <p id="visitor-history-status" class="visitor-analytics-note" role="status">Loading visit history…</p>
+                  <div class="visitor-city-scroll" tabindex="0" role="region" aria-label="Recent visit times">
+                    <table class="visitor-country-table visitor-city-table visitor-history-table">
+                      <thead><tr><th scope="col">Visit time</th><th scope="col">City</th><th scope="col">Country / region</th><th scope="col">Page</th></tr></thead>
+                      <tbody id="visitor-history-rows"></tbody>
+                    </table>
+                  </div>
+                </section>
                 <div class="visitor-country-stats" id="visitor-country-stats">Loading country visits…</div>
                 <p class="visitor-analytics-note">Country totals start Sep 7, 2026 and exclude earlier history. The badge is a separate counter.</p>
-                <p class="visitor-analytics-note">One visit per tab session. City locations are approximate; only aggregate locations are saved.</p>
+                <p class="visitor-analytics-note">One visit per tab session. City locations are approximate; aggregate locations and recent visit times are saved.</p>
                 <details class="visitor-report-help">
                   <summary>How to view time, city and page together</summary>
                   <ol>

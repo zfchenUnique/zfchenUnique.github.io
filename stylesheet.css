@@ -716,3 +716,6 @@ li{
 .visitor-city-table th, .visitor-city-table td { padding: 10px 8px; }
 .visitor-city-table th:nth-child(2), .visitor-city-table td:nth-child(2) { text-align: left; }
 .visitor-city-table tbody tr:nth-child(even) { background: #f8fafc; }
+
+.visitor-history-table td { text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.visitor-history-table { min-width: 560px; }
